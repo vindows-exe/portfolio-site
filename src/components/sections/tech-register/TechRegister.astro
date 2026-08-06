@@ -1,0 +1,34 @@
+---
+import type { SkillCategoryGroup } from '@/types/skill';
+import Section from '@/components/ui/Section.astro';
+import Container from '@/components/ui/Container.astro';
+import TechBadge from './TechBadge.astro';
+
+export interface Props {
+  categories: SkillCategoryGroup[];
+}
+---
+
+<Section id="skills" title="Skills" description="Technologies and tools I work with across the stack.">
+  <Container>
+    <div class="space-y-10">
+      {Astro.props.categories.map((group) => (
+        <div>
+          <h3 class="mb-4 text-sm font-mono font-semibold text-text-tertiary uppercase tracking-widest">
+            {group.label}
+          </h3>
+          <div class="flex flex-wrap gap-2">
+            {group.skills.map((skill) => (
+              <TechBadge
+                name={skill.name}
+                category={skill.category}
+                proficiency={skill.proficiency}
+                href={skill.href}
+              />
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </Container>
+</Section>

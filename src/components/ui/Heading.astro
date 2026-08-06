@@ -1,0 +1,20 @@
+---
+export interface Props {
+  level?: 2 | 3 | 4;
+  class?: string;
+}
+
+const { level = 2, class: className } = Astro.props;
+
+const levelClasses: Record<number, string> = {
+  2: 'text-display font-semibold text-text-primary',
+  3: 'text-2xl font-semibold text-text-primary',
+  4: 'text-xl font-medium text-text-primary',
+};
+
+const cls = `${levelClasses[level]} ${className ?? ''}`;
+---
+
+{level === 2 && <h2 class={cls}><slot /></h2>}
+{level === 3 && <h3 class={cls}><slot /></h3>}
+{level === 4 && <h4 class={cls}><slot /></h4>}

@@ -1,0 +1,80 @@
+---
+import type { ProjectCardProps } from '@/types/project';
+import Badge from '@/components/ui/Badge.astro';
+import Button from '@/components/ui/Button.astro';
+
+const {
+  title,
+  problem,
+  solution,
+  stack,
+  kpis,
+  repoUrl,
+  requirementsUrl,
+  architectureUrl,
+  diagramPreview,
+} = Astro.props as ProjectCardProps;
+---
+
+<article class="rounded-lg border border-border bg-surface p-6 transition-colors hover:border-border-subtle">
+  <div class="flex flex-col gap-6 md:flex-row md:gap-8">
+    <div class="flex-1 space-y-4">
+      <h3 class="text-2xl font-semibold text-text-primary">{title}</h3>
+
+      <div>
+        <h4 class="mb-1 text-sm font-mono font-medium text-text-tertiary uppercase tracking-wider">Problem</h4>
+        <p class="text-text-secondary leading-relaxed">{problem}</p>
+      </div>
+
+      <div>
+        <h4 class="mb-1 text-sm font-mono font-medium text-text-tertiary uppercase tracking-wider">Solution</h4>
+        <p class="text-text-secondary leading-relaxed">{solution}</p>
+      </div>
+
+      <div class="flex flex-wrap gap-2">
+        {stack.map((tech) => (
+          <Badge variant="default" size="sm">{tech}</Badge>
+        ))}
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2">
+        <Button href={repoUrl} variant="primary" class="!text-xs">
+          View on GitHub
+        </Button>
+        {requirementsUrl && (
+          <Button href={requirementsUrl} variant="ghost" class="!text-xs">
+            Requirements
+          </Button>
+        )}
+        {architectureUrl && (
+          <Button href={architectureUrl} variant="ghost" class="!text-xs">
+            Architecture
+          </Button>
+        )}
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-4 md:w-72">
+      {diagramPreview && (
+        <figure class="rounded-md border border-border overflow-hidden">
+          <img src={diagramPreview.src} alt={diagramPreview.alt} class="w-full h-auto" loading="lazy" />
+        </figure>
+      )}
+
+      {kpis.length > 0 && (
+        <div class="grid grid-cols-2 gap-3">
+          {kpis.map((kpi) => (
+            <div class="rounded-md border border-border-subtle bg-canvas p-3">
+              <div class="flex items-center gap-1">
+                <span class="text-xl font-bold text-accent">{kpi.value}</span>
+                {kpi.trend === 'up' && <span class="text-success text-sm" aria-label="upward trend">&uarr;</span>}
+                {kpi.trend === 'down' && <span class="text-danger text-sm" aria-label="downward trend">&darr;</span>}
+              </div>
+              <span class="text-xs text-text-tertiary font-mono">{kpi.label}</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  </div>
+</article>

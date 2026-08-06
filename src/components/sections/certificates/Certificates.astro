@@ -1,0 +1,43 @@
+---
+import type { Certificate } from '@/types/certificate';
+import Section from '@/components/ui/Section.astro';
+import Container from '@/components/ui/Container.astro';
+import Badge from '@/components/ui/Badge.astro';
+
+export interface Props {
+  items: Certificate[];
+}
+---
+
+<Section id="certificates" title="Certificates" description="Professional certifications and credentials.">
+  <Container>
+    {Astro.props.items.length > 0 ? (
+      <div class="space-y-4">
+        {Astro.props.items.map((cert) => (
+          <div class="flex items-start justify-between rounded-lg border border-border bg-surface p-4">
+            <div class="flex flex-col gap-1">
+              <h3 class="text-base font-medium text-text-primary">
+                {cert.credentialUrl ? (
+                  <a href={cert.credentialUrl} target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">
+                    {cert.name}
+                  </a>
+                ) : (
+                  cert.name
+                )}
+              </h3>
+              <p class="text-sm text-text-secondary font-mono">{cert.issuer}</p>
+            </div>
+            <div class="flex flex-col items-end gap-1 shrink-0">
+              <Badge variant="default" size="sm">{cert.date}</Badge>
+              {cert.expires && (
+                <span class="text-xs text-text-tertiary font-mono">Expires {cert.expires}</span>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <p class="text-text-secondary font-mono text-sm">No certificates listed yet.</p>
+    )}
+  </Container>
+</Section>

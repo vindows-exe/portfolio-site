@@ -1,0 +1,84 @@
+---
+import type { C4ViewerProps } from '@/types/project';
+
+const { projectSlug, layers, defaultLayer = 'context' } = Astro.props as C4ViewerProps;
+const name = `c4-${projectSlug}`;
+---
+
+<div class="c4-viewer" data-project={projectSlug}>
+  <fieldset role="tablist" aria-label="Architecture levels">
+    <legend class="sr-only">Architecture level</legend>
+
+    <div class="mb-4 flex gap-1 rounded-lg border border-border bg-surface p-1">
+      {layers.map((l) => (
+        <label
+          for={`${name}-${l.id}`}
+          class="c4-viewer__tab cursor-pointer rounded-md px-3 py-1.5 text-sm font-mono text-text-secondary transition-colors"
+          role="tab"
+          aria-controls={`${name}-panel-${l.id}`}
+          aria-selected={l.id === defaultLayer}
+        >
+          {l.label}
+        </label>
+      ))}
+    </div>
+
+    <div class="relative">
+      {layers.map((l) => (
+        <>
+          <input
+            type="radio"
+            name={name}
+            id={`${name}-${l.id}`}
+            value={l.id}
+            checked={l.id === defaultLayer}
+            class="sr-only c4-viewer__input"
+          />
+          <figure
+            id={`${name}-panel-${l.id}`}
+            class="c4-viewer__panel"
+            data-layer={l.id}
+            role="tabpanel"
+          >
+            <img
+              src={l.src}
+              alt={l.alt}
+              width={l.width}
+              height={l.height}
+              loading="lazy"
+              class="w-full h-auto rounded-lg border border-border"
+            />
+          </figure>
+        </>
+      ))}
+    </div>
+  </fieldset>
+</div>
+
+<style>
+  .c4-viewer__panel {
+    display: none;
+  }
+
+  .c4-viewer__input:checked + .c4-viewer__panel {
+    display: block;
+  }
+
+  .c4-viewer:has(.c4-viewer__input[id$="context"]:checked) label[for$="context"] {
+    background-color: var(--color-accent);
+    color: black;
+    font-weight: 500;
+  }
+
+  .c4-viewer:has(.c4-viewer__input[id$="container"]:checked) label[for$="container"] {
+    background-color: var(--color-accent);
+    color: black;
+    font-weight: 500;
+  }
+
+  .c4-viewer:has(.c4-viewer__input[id$="component"]:checked) label[for$="component"] {
+    background-color: var(--color-accent);
+    color: black;
+    font-weight: 500;
+  }
+</style>

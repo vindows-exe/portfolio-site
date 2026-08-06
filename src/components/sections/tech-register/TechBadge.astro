@@ -1,0 +1,26 @@
+---
+import type { SkillCategory } from '@/types/skill';
+
+export interface Props {
+  name: string;
+  category: SkillCategory;
+  icon?: string;
+  proficiency?: 'core' | 'proficient' | 'familiar';
+  href?: string;
+}
+
+const { name, proficiency, href } = Astro.props;
+---
+
+<span
+  class="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3 py-1.5 text-sm font-mono text-text-secondary transition-colors hover:border-border-subtle hover:text-text-primary"
+>
+  {proficiency === 'core' && (
+    <span class="inline-block h-1.5 w-1.5 rounded-full bg-accent" aria-label="Core proficiency"></span>
+  )}
+  {href ? (
+    <a href={href} target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">{name}</a>
+  ) : (
+    name
+  )}
+</span>

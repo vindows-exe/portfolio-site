@@ -1,0 +1,123 @@
+---
+import type { GitHubStatsSnapshot } from '@/types/github';
+import Section from '@/components/ui/Section.astro';
+import Container from '@/components/ui/Container.astro';
+import Card from '@/components/ui/Card.astro';
+
+export interface Props {
+  data: GitHubStatsSnapshot;
+}
+
+const { data } = Astro.props;
+const isFallback = data.source === 'fallback';
+
+const heatmapColors: Record<number, string> = {
+  0: 'bg-surface-raised',
+  1: 'bg-accent-subtle opacity-30',
+  2: 'bg-accent-subtle opacity-50',
+  3: 'bg-accent-subtle opacity-70',
+  4: 'bg-accent',
+};
+---
+
+<Section id="github" title="GitHub" description="Contribution activity and pinned repositories.">
+  <Container>
+    {isFallback && (
+      <p class="mb-6 rounded-md border border-accent/30 bg-accent-subtle px-4 py-2 text-sm font-mono text-accent">
+        GitHub data unavailable &mdash; showing sample data. Set <code class="text-xs">GITHUB_TOKEN</code> to fetch live data.
+      </p>
+    )}
+
+    {data.contributionCalendar && (
+      <div class="mb-10">
+        <h3 class="mb-2 text-sm font-mono font-medium text-text-tertiary">
+          {data.contributionCalendar.totalContributions} contributions in the last year
+        </h3>
+        <div class="overflow-x-auto pb-2">
+          <div
+            class="grid gap-[3px]"
+            style={{
+              gridTemplateColumns: `repeat(${data.contributionCalendar.weeks.length}, 10px)`,
+              gridTemplateRows: 'repeat(7, 10px)',
+            }}
+          >
+            {data.contributionCalendar.weeks.map((week) =>
+              week.days.map((day) => (
+                <div
+                  class={`rounded-sm ${heatmapColors[day.level]}`}
+                  style={{ width: '10px', height: '10px' }}
+                  title={`${day.date}: ${day.count} contributions`}
+                  aria-label={`${day.date}: ${day.count} contributions`}
+                ></div>
+              ))
+            )}
+          </div>
+        </div>
+      </div>
+    )}
+
+    {data.repoStats.length > 0 && (
+      <div class="mb-10">
+        <h3 class="mb-4 text-sm font-mono font-medium text-text-tertiary uppercase tracking-wider">Repository Stats</h3>
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {data.repoStats.map((repo) => (
+            <Card>
+              <div class="flex items-start justify-between">
+                <div class="min-w-0">
+                  <a
+                    href={repo.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="font-mono text-sm font-medium text-text-primary hover:text-accent transition-colors truncate block"
+                  >
+                    {repo.name}
+                  </a>
+                  {repo.description && (
+                    <p class="mt-1 text-xs text-text-tertiary line-clamp-2">{repo.description}</p>
+                  )}
+                </div>
+              </div>
+              <div class="mt-3 flex items-center gap-4 text-xs text-text-tertiary">
+                {repo.primaryLanguage && (
+                  <span class="font-mono">{repo.primaryLanguage}</span>
+                )}
+                <span>&star; {repo.stars}</span>
+                <span>fork {repo.forks}</span>
+              </div>
+            </Card>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {data.pinnedRepos.length > 0 && (
+      <div>
+        <h3 class="mb-4 text-sm font-mono font-medium text-text-tertiary uppercase tracking-wider">Pinned Repositories</h3>
+        <div class="grid gap-4 sm:grid-cols-2">
+          {data.pinnedRepos.map((repo) => (
+            <Card>
+              <a
+                href={repo.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="font-mono text-sm font-medium text-text-primary hover:text-accent transition-colors"
+              >
+                {repo.name}
+              </a>
+              {repo.description && (
+                <p class="mt-1 text-xs text-text-tertiary">{repo.description}</p>
+              )}
+              <div class="mt-3 flex items-center gap-4 text-xs text-text-tertiary">
+                {repo.language && (
+                  <span class="font-mono">{repo.language.name}</span>
+                )}
+                <span>&star; {repo.stars}</span>
+                <span>fork {repo.forks}</span>
+              </div>
+            </Card>
+          ))}
+        </div>
+      </div>
+    )}
+  </Container>
+</Section>

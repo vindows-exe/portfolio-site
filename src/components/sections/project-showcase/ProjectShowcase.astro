@@ -1,0 +1,35 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Section from '@/components/ui/Section.astro';
+import Container from '@/components/ui/Container.astro';
+import ProjectCard from './ProjectCard.astro';
+
+export interface Props {
+  projects: CollectionEntry<'projects'>[];
+}
+---
+
+<Section id="projects" title="Projects" description="Real-world systems built for production. Each project includes architecture, KPIs, and the engineering decisions behind it.">
+  <Container>
+    <div class="space-y-8">
+      {Astro.props.projects.length > 0 ? (
+        Astro.props.projects.map((project) => (
+          <ProjectCard
+            slug={project.slug}
+            title={project.data.title}
+            problem={project.data.problem}
+            solution={project.data.solution}
+            stack={project.data.stack}
+            kpis={project.data.kpis}
+            repoUrl={project.data.repoUrl}
+            requirementsUrl={project.data.requirementsUrl}
+            architectureUrl={project.data.architectureUrl}
+            featured={project.data.featured}
+          />
+        ))
+      ) : (
+        <p class="text-text-secondary font-mono text-sm">Projects coming soon.</p>
+      )}
+    </div>
+  </Container>
+</Section>
