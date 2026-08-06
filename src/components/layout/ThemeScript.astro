@@ -1,0 +1,8 @@
+<script is:inline>
+  (function () {
+    const stored = localStorage.getItem('theme');
+    const theme = stored === 'light' ? 'light' : 'dark';
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+    document.documentElement.style.colorScheme = theme;
+  })();
+</script>

@@ -8,6 +8,7 @@ export default tseslint.config(
     ignores: [
       'dist/**',
       '.astro/**',
+      '.venv/**',
       'node_modules/**',
       'src/data/generated/github-stats.json',
     ],

@@ -1,0 +1,35 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-canvas: #09090b;
+  --color-canvas-light: #fafafa;
+  --color-surface: #18181b;
+  --color-surface-light: #f4f4f5;
+  --color-surface-raised: #27272a;
+  --color-border: #3f3f46;
+  --color-border-subtle: #27272a;
+  --color-text-primary: #fafafa;
+  --color-text-primary-light: #18181b;
+  --color-text-secondary: #a1a1aa;
+  --color-text-tertiary: #71717a;
+  --color-accent: #f5a524;
+  --color-accent-emphasis: #ffbc4b;
+  --color-accent-subtle: #f5a52426;
+  --color-success: #4ade80;
+  --color-danger: #f87171;
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+  --text-hero: clamp(2.5rem, 5vw + 1rem, 4.5rem);
+  --text-hero--line-height: 1.05;
+  --text-display: clamp(1.875rem, 3vw + 1rem, 3rem);
+  --text-display--line-height: 1.15;
+  --width-prose: 42rem;
+  --width-shell: 80rem;
+}
+
+:root:not(.dark) {
+  --color-canvas: var(--color-canvas-light);
+  --color-surface: var(--color-surface-light);
+  --color-text-primary: var(--color-text-primary-light);
+}
