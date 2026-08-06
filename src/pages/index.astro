@@ -1,13 +1,40 @@
 ---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/sections/hero/Hero.astro';
+import ProjectShowcase from '@/components/sections/project-showcase/ProjectShowcase.astro';
+import TechRegister from '@/components/sections/tech-register/TechRegister.astro';
+import GitHubDashboard from '@/components/sections/github-dashboard/GitHubDashboard.astro';
+import BlogPreview from '@/components/sections/blog-preview/BlogPreview.astro';
+import Certificates from '@/components/sections/certificates/Certificates.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { SITE } from '@/data/site';
+import { SKILLS } from '@/data/skills';
+import { CERTIFICATES } from '@/data/certificates';
+import type { GitHubStatsSnapshot } from '@/types/github';
 
+let githubStats: GitHubStatsSnapshot | null = null;
+try {
+  githubStats = (await import('@/data/generated/github-stats.json')).default as GitHubStatsSnapshot;
+} catch {
+  // Not available during early dev
+}
+
+const projects: CollectionEntry<'projects'>[] = (await getCollection('projects'))
+  .filter((p: CollectionEntry<'projects'>) => p.data.featured !== false)
+  .sort((a: CollectionEntry<'projects'>, b: CollectionEntry<'projects'>) => (a.data.order ?? 99) - (b.data.order ?? 99))
+  .slice(0, 3);
+
+const posts: CollectionEntry<'blog'>[] = (await getCollection('blog'))
+  .filter((p: CollectionEntry<'blog'>) => !p.data.draft)
+  .sort((a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
+  .slice(0, 3);
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>vindows</title>
-  </head>
-  <body>
-    <p>Hello, vindows.</p>
-  </body>
-</html>
+<BaseLayout title={SITE.title} description={SITE.description}>
+  <Hero name={SITE.name} handle={SITE.handle} tagline={SITE.tagline} socials={SITE.socials} />
+  <ProjectShowcase projects={projects} />
+  <TechRegister categories={SKILLS} />
+  {githubStats && <GitHubDashboard data={githubStats} />}
+  <BlogPreview posts={posts} />
+  <Certificates items={CERTIFICATES} />
+</BaseLayout>
