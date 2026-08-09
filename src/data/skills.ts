@@ -4,30 +4,51 @@ export const SKILLS: SkillCategoryGroup[] = [
   {
     category: 'language',
     skills: [
-      { name: 'Java', category: 'language', proficiency: 'core' },
-      { name: 'Go', category: 'language', proficiency: 'core' },
+      { name: 'Java (SE)', category: 'language', proficiency: 'core' },
       { name: 'TypeScript', category: 'language', proficiency: 'proficient' },
+      { name: 'Python', category: 'language', proficiency: 'proficient' },
     ],
   },
   {
     category: 'framework',
-    skills: [{ name: 'Spring Boot', category: 'framework', proficiency: 'core' }],
+    skills: [
+      { name: 'Spring Boot', category: 'framework', proficiency: 'core' },
+      { name: 'Angular', category: 'framework', proficiency: 'familiar' },
+      { name: 'React', category: 'framework', proficiency: 'familiar' },
+    ],
   },
   {
     category: 'infrastructure',
     skills: [
-      { name: 'Docker', category: 'infrastructure', proficiency: 'core' },
-      { name: 'Kubernetes', category: 'infrastructure', proficiency: 'core' },
-      { name: 'Terraform', category: 'infrastructure', proficiency: 'proficient' },
-      { name: 'AWS', category: 'infrastructure', proficiency: 'core' },
+      { name: 'Docker', category: 'infrastructure', proficiency: 'proficient' },
+      { name: 'Kubernetes', category: 'infrastructure', proficiency: 'familiar' },
+      { name: 'MySQL', category: 'infrastructure', proficiency: 'proficient' },
+      { name: 'ArcGIS Enterprise', category: 'infrastructure', proficiency: 'proficient' },
+    ],
+  },
+  {
+    category: 'tool',
+    skills: [
+      { name: 'Claude Code', category: 'tool', proficiency: 'core' },
+      { name: 'Claude', category: 'tool', proficiency: 'core' },
+      { name: 'KI-Agenten', category: 'tool', proficiency: 'core' },
+      { name: 'OpenCode', category: 'tool', proficiency: 'proficient' },
+      { name: 'Vibe Coding', category: 'tool', proficiency: 'proficient' },
+      { name: 'Cesium', category: 'tool', proficiency: 'familiar' },
+      { name: 'OpenLayers', category: 'tool', proficiency: 'familiar' },
+    ],
+  },
+  {
+    category: 'methodology',
+    skills: [
+      { name: 'Data Spaces', category: 'methodology', proficiency: 'proficient' },
+      { name: 'Requirements Engineering (IREB)', category: 'methodology', proficiency: 'proficient' },
     ],
   },
   {
     category: 'quality-assurance',
     skills: [
-      { name: 'Testcontainers', category: 'quality-assurance', proficiency: 'proficient' },
-      { name: 'JUnit', category: 'quality-assurance', proficiency: 'core' },
-      { name: 'k6', category: 'quality-assurance', proficiency: 'familiar' },
+      { name: 'adSCAILE', category: 'quality-assurance', proficiency: 'proficient' },
     ],
   },
 ];

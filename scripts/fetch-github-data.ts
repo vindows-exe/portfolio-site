@@ -19,9 +19,7 @@ const SAMPLE_PATH = resolve(
   'src/data/generated/github-stats.sample.json',
 );
 
-const FEATURED_REPOS = [
-  { owner: 'vindows', name: 'painlove' },
-];
+const FEATURED_REPOS: { owner: string; name: string }[] = [];
 
 async function main(): Promise<void> {
   const token = process.env.GITHUB_TOKEN;

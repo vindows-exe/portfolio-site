@@ -1,4 +1,4 @@
-export type SkillCategory = 'language' | 'framework' | 'infrastructure' | 'quality-assurance';
+export type SkillCategory = 'language' | 'framework' | 'infrastructure' | 'tool' | 'methodology' | 'quality-assurance';
 
 export interface Skill {
   name: string;

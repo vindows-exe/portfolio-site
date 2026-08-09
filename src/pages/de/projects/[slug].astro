@@ -6,9 +6,9 @@ import { type Locale } from '@/i18n';
 const locale: Locale = 'de';
 
 export async function getStaticPaths() {
-  const projects: CollectionEntry<'projects'>[] = await getCollection('projects', ({ id }: { id: string }) => id.startsWith('en/'));
+  const projects: CollectionEntry<'projects'>[] = await getCollection('projects', ({ id }: { id: string }) => id.startsWith('de/'));
   return projects.map((project: CollectionEntry<'projects'>) => ({
-    params: { slug: project.slug.replace(/^en\//, '') },
+    params: { slug: project.slug.replace(/^de\//, '') },
     props: { project },
   }));
 }

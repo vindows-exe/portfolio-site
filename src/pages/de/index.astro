@@ -22,7 +22,7 @@ try {
   // Not available during early dev
 }
 
-const projects: CollectionEntry<'projects'>[] = (await getCollection('projects', ({ id }: { id: string }) => id.startsWith('en/')))
+const projects: CollectionEntry<'projects'>[] = (await getCollection('projects', ({ id }: { id: string }) => id.startsWith('de/')))
   .filter((p: CollectionEntry<'projects'>) => p.data.featured !== false)
   .sort((a: CollectionEntry<'projects'>, b: CollectionEntry<'projects'>) => (a.data.order ?? 99) - (b.data.order ?? 99))
   .slice(0, 3);
