@@ -11,6 +11,9 @@ import { SITE } from '@/data/site';
 import { SKILLS } from '@/data/skills';
 import { CERTIFICATES } from '@/data/certificates';
 import type { GitHubStatsSnapshot } from '@/types/github';
+import { type Locale } from '@/i18n';
+
+const locale: Locale = 'en';
 
 let githubStats: GitHubStatsSnapshot | null = null;
 try {
@@ -30,11 +33,11 @@ const posts: CollectionEntry<'blog'>[] = (await getCollection('blog', ({ id }: {
   .slice(0, 3);
 ---
 
-<BaseLayout title={SITE.title} description={SITE.description}>
-  <Hero name={SITE.name} handle={SITE.handle} tagline={SITE.tagline} socials={SITE.socials} />
-  <ProjectShowcase projects={projects} />
-  <TechRegister categories={SKILLS} />
-  {githubStats && <GitHubDashboard data={githubStats} />}
-  <BlogPreview posts={posts} />
-  <Certificates items={CERTIFICATES.slice(0, 3)} />
+<BaseLayout title={SITE.title} description={SITE.description} locale={locale}>
+  <Hero name={SITE.name} handle={SITE.handle} tagline={SITE.tagline} socials={SITE.socials} locale={locale} />
+  <ProjectShowcase projects={projects} locale={locale} />
+  <TechRegister categories={SKILLS} locale={locale} />
+  {githubStats && <GitHubDashboard data={githubStats} locale={locale} />}
+  <BlogPreview posts={posts} locale={locale} />
+  <Certificates items={CERTIFICATES.slice(0, 3)} locale={locale} />
 </BaseLayout>

@@ -3,18 +3,22 @@ import type { Certificate } from '@/types/certificate';
 import Section from '@/components/ui/Section.astro';
 import Container from '@/components/ui/Container.astro';
 import Badge from '@/components/ui/Badge.astro';
+import { t, type Locale } from '@/i18n';
 
 export interface Props {
   items: Certificate[];
+  locale?: Locale;
 }
+
+const { items, locale = 'en' } = Astro.props;
 ---
 
-<Section id="certificates" title="Certificates" description="professional credentials" variant="alt">
+<Section id="certificates" title={t(locale, 'section.certificates')} description={t(locale, 'section.certificates.desc')} variant="alt">
   <Container>
-    {Astro.props.items.length > 0 ? (
+    {items.length > 0 ? (
       <>
         <div class="space-y-4">
-          {Astro.props.items.map((cert) => (
+          {items.map((cert) => (
             <div class="flex items-start justify-between rounded-lg border border-border bg-surface p-4 border-l-2 border-accent/30">
               <div class="flex flex-col gap-1">
                 <h3 class="text-base font-medium text-text-primary">
@@ -31,7 +35,7 @@ export interface Props {
               <div class="flex flex-col items-end gap-1 shrink-0">
                 <Badge variant="default" size="sm">{cert.date}</Badge>
                 {cert.expires && (
-                  <span class="text-xs text-text-tertiary font-mono">Expires {cert.expires}</span>
+                  <span class="text-xs text-text-tertiary font-mono">{t(locale, 'certificates.expires')} {cert.expires}</span>
                 )}
               </div>
             </div>
@@ -41,11 +45,11 @@ export interface Props {
           href="/certificates"
           class="mt-8 inline-flex items-center gap-1 text-sm font-mono text-text-secondary hover:text-accent transition-colors"
         >
-          View all certificates &rarr;
+          {t(locale, 'certificates.viewAll')}
         </a>
       </>
     ) : (
-      <p class="text-text-secondary font-mono text-sm">No certificates listed yet.</p>
+      <p class="text-text-secondary font-mono text-sm">{t(locale, 'certificates.noCertificates')}</p>
     )}
   </Container>
 </Section>

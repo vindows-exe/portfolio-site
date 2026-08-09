@@ -2,18 +2,22 @@
 import type { CollectionEntry } from 'astro:content';
 import Section from '@/components/ui/Section.astro';
 import Container from '@/components/ui/Container.astro';
+import { t, type Locale } from '@/i18n';
 
 export interface Props {
   posts: CollectionEntry<'blog'>[];
+  locale?: Locale;
 }
+
+const { posts, locale = 'en' } = Astro.props;
 ---
 
-<Section id="blog" title="Blog" description="thoughts on systems engineering">
+<Section id="blog" title={t(locale, 'section.blog')} description={t(locale, 'section.blog.desc')}>
   <Container>
-    {Astro.props.posts.length > 0 ? (
+    {posts.length > 0 ? (
       <>
         <div class="space-y-6">
-          {Astro.props.posts.map((post) => (
+          {posts.map((post) => (
             <a href={`/blog/${post.slug.replace(/^en\//, '')}`} class="block rounded-lg border border-border bg-surface p-6 transition-colors hover:border-accent/30 hover:bg-surface-raised group">
               <div class="flex flex-col gap-2">
                 <div class="flex items-center gap-3 text-xs font-mono text-text-tertiary">
@@ -33,7 +37,7 @@ export interface Props {
                 </h3>
                 <p class="text-sm text-text-secondary leading-relaxed">{post.data.description}</p>
                 <span class="mt-1 text-sm font-mono text-accent">
-                  Read more &rarr;
+                  {t(locale, 'blog.readMore')}
                 </span>
               </div>
             </a>
@@ -43,11 +47,11 @@ export interface Props {
           href="/blog"
           class="mt-8 inline-flex items-center gap-1 text-sm font-mono text-text-secondary hover:text-accent transition-colors"
         >
-          View all posts &rarr;
+          {t(locale, 'blog.viewAll')}
         </a>
       </>
     ) : (
-      <p class="text-text-secondary font-mono text-sm">No posts yet.</p>
+      <p class="text-text-secondary font-mono text-sm">{t(locale, 'blog.noPosts')}</p>
     )}
   </Container>
 </Section>

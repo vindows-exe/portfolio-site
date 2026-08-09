@@ -2,6 +2,11 @@
 import type { ProjectCardProps } from '@/types/project';
 import Badge from '@/components/ui/Badge.astro';
 import Button from '@/components/ui/Button.astro';
+import { t, type Locale } from '@/i18n';
+
+export interface Props extends ProjectCardProps {
+  locale?: Locale;
+}
 
 const {
   title,
@@ -13,7 +18,8 @@ const {
   requirementsUrl,
   architectureUrl,
   diagramPreview,
-} = Astro.props as ProjectCardProps;
+  locale = 'en',
+} = Astro.props as Props;
 ---
 
 <article class="rounded-lg border border-border bg-surface p-6 transition-colors hover:border-border-subtle border-l-2 border-accent/30">
@@ -22,12 +28,12 @@ const {
       <h3 class="text-2xl font-semibold text-text-primary">{title}</h3>
 
       <div>
-        <h4 class="mb-1 text-sm font-mono font-medium text-text-tertiary uppercase tracking-wider">Problem</h4>
+          <h4 class="mb-1 text-sm font-mono font-medium text-text-tertiary uppercase tracking-wider">{t(locale, 'project.problem')}</h4>
         <p class="text-text-secondary leading-relaxed">{problem}</p>
       </div>
 
       <div>
-        <h4 class="mb-1 text-sm font-mono font-medium text-text-tertiary uppercase tracking-wider">Solution</h4>
+          <h4 class="mb-1 text-sm font-mono font-medium text-text-tertiary uppercase tracking-wider">{t(locale, 'project.solution')}</h4>
         <p class="text-text-secondary leading-relaxed">{solution}</p>
       </div>
 
@@ -39,7 +45,7 @@ const {
 
       <div class="flex flex-wrap items-center gap-2">
         <Button href={repoUrl} variant="primary" class="!text-xs">
-          View on GitHub
+          {t(locale, 'project.viewOnGitHub')}
         </Button>
         {requirementsUrl && (
           <Button href={requirementsUrl} variant="ghost" class="!text-xs">

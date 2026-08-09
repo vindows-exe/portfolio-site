@@ -3,12 +3,14 @@ import type { GitHubStatsSnapshot } from '@/types/github';
 import Section from '@/components/ui/Section.astro';
 import Container from '@/components/ui/Container.astro';
 import Card from '@/components/ui/Card.astro';
+import { t, type Locale } from '@/i18n';
 
 export interface Props {
   data: GitHubStatsSnapshot;
+  locale?: Locale;
 }
 
-const { data } = Astro.props;
+const { data, locale = 'en' } = Astro.props;
 const isFallback = data.source === 'fallback';
 
 const repoCount = data.repoStats.length;
@@ -41,11 +43,11 @@ const heatmapColors: Record<number, string> = {
 };
 ---
 
-<Section id="github" title="GitHub" description="contribution activity and repository metrics" variant="alt" padding="spacious">
+<Section id="github" title={t(locale, 'section.github')} description={t(locale, 'section.github.desc')} variant="alt" padding="spacious">
   <Container>
     {isFallback && (
       <p class="mb-6 rounded-md border border-accent/30 bg-accent-subtle px-4 py-2 text-sm font-mono text-accent">
-        GitHub data unavailable &mdash; showing sample data. Set <code class="text-xs">GITHUB_TOKEN</code> to fetch live data.
+        {t(locale, 'github.unavailable')}
       </p>
     )}
 
@@ -53,15 +55,15 @@ const heatmapColors: Record<number, string> = {
       <div class="grid grid-cols-3 gap-3 mb-8">
         <div class="rounded-lg border border-border bg-surface p-3 text-center">
           <span class="block text-xl font-bold text-accent font-mono">{repoCount}</span>
-          <span class="text-xs text-text-tertiary font-mono">Repositories</span>
+          <span class="text-xs text-text-tertiary font-mono">{t(locale, 'github.repositories')}</span>
         </div>
         <div class="rounded-lg border border-border bg-surface p-3 text-center">
           <span class="block text-xl font-bold text-accent font-mono">{totalStars}</span>
-          <span class="text-xs text-text-tertiary font-mono">Total Stars</span>
+          <span class="text-xs text-text-tertiary font-mono">{t(locale, 'github.totalStars')}</span>
         </div>
         <div class="rounded-lg border border-border bg-surface p-3 text-center">
           <span class="block text-xl font-bold text-accent font-mono">{topLanguage}</span>
-          <span class="text-xs text-text-tertiary font-mono">Top Language</span>
+          <span class="text-xs text-text-tertiary font-mono">{t(locale, 'github.topLanguage')}</span>
         </div>
       </div>
     )}
@@ -69,7 +71,7 @@ const heatmapColors: Record<number, string> = {
     {data.contributionCalendar && (
       <div class="mb-10">
         <h3 class="mb-3 text-sm font-mono font-medium text-text-tertiary">
-          {data.contributionCalendar.totalContributions} contributions in the last year
+          {data.contributionCalendar.totalContributions} {locale === 'de' ? 'Beiträge im letzten Jahr' : 'contributions in the last year'}
         </h3>
         <div class="overflow-x-auto pb-2">
           <div

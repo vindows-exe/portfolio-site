@@ -1,13 +1,17 @@
 ---
 import type { SocialLink } from '@/types/social';
 import Container from '@/components/ui/Container.astro';
+import { t, type Locale } from '@/i18n';
 
 export interface Props {
   name: string;
   handle: string;
   tagline: string;
   socials: SocialLink[];
+  locale?: Locale;
 }
+
+const { name, handle, tagline, socials, locale = 'en' } = Astro.props;
 ---
 
 <section
@@ -18,23 +22,23 @@ export interface Props {
   <Container>
     <div class="flex flex-col items-center text-center">
       <h1 id="hero-heading" class="text-hero font-bold text-text-primary tracking-tight">
-        {Astro.props.name}
+        {name}
       </h1>
       <p class="mt-2 font-mono text-sm text-text-tertiary">
-        <span aria-hidden="true">@</span>{Astro.props.handle}
+        <span aria-hidden="true">@</span>{handle}
       </p>
       <p class="mt-4 text-lg text-text-secondary max-w-xl">
-        {Astro.props.tagline}
+        {tagline}
       </p>
       <div class="mt-6 flex items-center gap-4 text-xs font-mono text-text-tertiary">
-        <span>15+ years experience</span>
+        <span>{t(locale, 'hero.experience')}</span>
         <span class="text-border-subtle" aria-hidden="true">|</span>
-        <span>Java &middot; Go &middot; TypeScript</span>
+        <span>{t(locale, 'hero.techStack')}</span>
         <span class="text-border-subtle" aria-hidden="true">|</span>
-        <span>Kubernetes &middot; AWS</span>
+        <span>{t(locale, 'hero.infra')}</span>
       </div>
       <nav aria-label="Social links" class="mt-8 flex items-center gap-6">
-        {Astro.props.socials.map((social) => (
+        {socials.map((social) => (
           <a
             href={social.url}
             class="font-mono text-sm text-text-tertiary hover:text-accent transition-colors"

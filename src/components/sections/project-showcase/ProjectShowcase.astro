@@ -3,17 +3,21 @@ import type { CollectionEntry } from 'astro:content';
 import Section from '@/components/ui/Section.astro';
 import Container from '@/components/ui/Container.astro';
 import ProjectCard from './ProjectCard.astro';
+import { t, type Locale } from '@/i18n';
 
 export interface Props {
   projects: CollectionEntry<'projects'>[];
+  locale?: Locale;
 }
+
+const { projects, locale = 'en' } = Astro.props;
 ---
 
-<Section id="projects" title="Projects" description="real-world systems built for production" variant="alt" padding="spacious">
+<Section id="projects" title={t(locale, 'section.projects')} description={t(locale, 'section.projects.desc')} variant="alt" padding="spacious">
   <Container>
     <div class="space-y-8">
-      {Astro.props.projects.length > 0 ? (
-        Astro.props.projects.map((project) => (
+      {projects.length > 0 ? (
+        projects.map((project) => (
           <ProjectCard
             slug={project.slug}
             title={project.data.title}
@@ -25,6 +29,7 @@ export interface Props {
             requirementsUrl={project.data.requirementsUrl}
             architectureUrl={project.data.architectureUrl}
             featured={project.data.featured}
+            locale={locale}
           />
         ))
       ) : (
