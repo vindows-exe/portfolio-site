@@ -4,12 +4,13 @@ export interface Props {
   title?: string;
   description?: string;
   class?: string;
+  variant?: 'default' | 'alt';
 }
 
-const { id, title, description, class: className } = Astro.props;
+const { id, title, description, class: className, variant = 'default' } = Astro.props;
 ---
 
-<section id={id} aria-labelledby={`${id}-heading`} class={`py-16 md:py-24 ${className ?? ''}`}>
+<section id={id} aria-labelledby={`${id}-heading`} class={`py-16 md:py-24 ${variant === 'alt' ? 'bg-surface' : 'bg-canvas'} ${className ?? ''}`}>
   {title && (
     <div class="mb-12">
       <h2 id={`${id}-heading`} class="text-display font-semibold text-text-primary">{title}</h2>
