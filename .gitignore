@@ -10,6 +10,12 @@ dist/
 .env.local
 .env.*.local
 
+# Claude Code
+.claude/
+
+# Python virtual environment
+.venv/
+
 # generated data (regenerated on every build; sample fixture stays tracked)
 src/data/generated/github-stats.json
 

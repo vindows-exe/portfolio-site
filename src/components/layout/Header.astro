@@ -1,13 +1,12 @@
 ---
 import { NAV_ITEMS } from '@/config/constants';
-import { t, localizedUrl, type Locale } from '@/i18n';
+import { t, type Locale } from '@/i18n';
 
 export interface Props {
   locale?: Locale;
 }
 
 const { locale = 'en' } = Astro.props;
-const currentPath = Astro.url.pathname;
 ---
 
 <header class="sticky top-0 z-40 border-b border-border bg-canvas/95 backdrop-blur-sm">
@@ -27,16 +26,14 @@ const currentPath = Astro.url.pathname;
       ))}
 
       <div class="flex items-center gap-0.5 ml-2 border-l border-border pl-2">
-        <a
-          href={locale === 'de' ? localizedUrl(currentPath, 'en') : '#'}
-          class={`px-1.5 py-0.5 text-xs font-mono rounded transition-colors ${locale === 'en' ? 'text-accent bg-accent-subtle' : 'text-text-tertiary hover:text-text-secondary'}`}
+        <button id="lang-en"
+          class={`cursor-pointer px-1.5 py-0.5 text-xs font-mono rounded transition-colors ${locale === 'en' ? 'text-accent bg-accent-subtle' : 'text-text-tertiary hover:text-text-secondary'}`}
           aria-label="Switch to English"
-        >EN</a>
-        <a
-          href={locale === 'en' ? localizedUrl(currentPath, 'de') : '#'}
-          class={`px-1.5 py-0.5 text-xs font-mono rounded transition-colors ${locale === 'de' ? 'text-accent bg-accent-subtle' : 'text-text-tertiary hover:text-text-secondary'}`}
+        >EN</button>
+        <button id="lang-de"
+          class={`cursor-pointer px-1.5 py-0.5 text-xs font-mono rounded transition-colors ${locale === 'de' ? 'text-accent bg-accent-subtle' : 'text-text-tertiary hover:text-text-secondary'}`}
           aria-label="Switch to German"
-        >DE</a>
+        >DE</button>
       </div>
 
       <button
@@ -71,5 +68,20 @@ const currentPath = Astro.url.pathname;
     document.documentElement.style.colorScheme = newTheme;
     localStorage.setItem('theme', newTheme);
     updateIcons(newTheme);
+  });
+
+  document.getElementById('lang-en')?.addEventListener('click', () => {
+    if (window.location.pathname.startsWith('/de')) {
+      sessionStorage.setItem('lang-switch-pos', window.scrollY.toString());
+      localStorage.setItem('lang', 'en');
+      window.location.href = window.location.pathname.replace(/^\/de/, '') || '/' + window.location.hash;
+    }
+  });
+  document.getElementById('lang-de')?.addEventListener('click', () => {
+    if (!window.location.pathname.startsWith('/de')) {
+      sessionStorage.setItem('lang-switch-pos', window.scrollY.toString());
+      localStorage.setItem('lang', 'de');
+      window.location.href = '/de' + window.location.pathname + window.location.hash;
+    }
   });
 </script>
