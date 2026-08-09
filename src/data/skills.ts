@@ -3,7 +3,6 @@ import type { SkillCategoryGroup } from '@/types/skill';
 export const SKILLS: SkillCategoryGroup[] = [
   {
     category: 'language',
-    label: 'Languages',
     skills: [
       { name: 'Java', category: 'language', proficiency: 'core' },
       { name: 'Go', category: 'language', proficiency: 'core' },
@@ -12,12 +11,10 @@ export const SKILLS: SkillCategoryGroup[] = [
   },
   {
     category: 'framework',
-    label: 'Frameworks',
     skills: [{ name: 'Spring Boot', category: 'framework', proficiency: 'core' }],
   },
   {
     category: 'infrastructure',
-    label: 'Infrastructure',
     skills: [
       { name: 'Docker', category: 'infrastructure', proficiency: 'core' },
       { name: 'Kubernetes', category: 'infrastructure', proficiency: 'core' },
@@ -27,7 +24,6 @@ export const SKILLS: SkillCategoryGroup[] = [
   },
   {
     category: 'quality-assurance',
-    label: 'Quality Assurance',
     skills: [
       { name: 'Testcontainers', category: 'quality-assurance', proficiency: 'proficient' },
       { name: 'JUnit', category: 'quality-assurance', proficiency: 'core' },

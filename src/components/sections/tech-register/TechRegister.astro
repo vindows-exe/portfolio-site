@@ -1,21 +1,32 @@
 ---
-import type { SkillCategoryGroup } from '@/types/skill';
+import type { SkillCategoryGroup, SkillCategory } from '@/types/skill';
 import Section from '@/components/ui/Section.astro';
 import Container from '@/components/ui/Container.astro';
 import TechBadge from './TechBadge.astro';
+import { t, type Locale } from '@/i18n';
 
 export interface Props {
   categories: SkillCategoryGroup[];
+  locale?: Locale;
 }
+
+const { categories, locale = 'en' } = Astro.props;
+
+const categoryKey: Record<SkillCategory, `category.${SkillCategory}`> = {
+  language: 'category.language',
+  framework: 'category.framework',
+  infrastructure: 'category.infrastructure',
+  'quality-assurance': 'category.quality-assurance',
+};
 ---
 
 <Section id="skills" title="Skills" description="technologies I work with across the stack" padding="spacious">
   <Container>
     <div class="space-y-10">
-      {Astro.props.categories.map((group) => (
+      {categories.map((group) => (
         <div class="rounded-lg border border-border bg-surface p-5">
           <h3 class="mb-4 text-sm font-mono font-semibold text-text-tertiary uppercase tracking-widest">
-            {group.label}
+            {t(locale, categoryKey[group.category])}
           </h3>
           <div class="flex flex-wrap gap-2">
             {group.skills.map((skill) => (

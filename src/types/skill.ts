@@ -10,6 +10,5 @@ export interface Skill {
 
 export interface SkillCategoryGroup {
   category: SkillCategory;
-  label: string;
   skills: Skill[];
 }
