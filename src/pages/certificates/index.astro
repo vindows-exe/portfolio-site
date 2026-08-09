@@ -1,0 +1,42 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import Badge from '@/components/ui/Badge.astro';
+import { CERTIFICATES } from '@/data/certificates';
+---
+
+<BaseLayout title="Certificates — Vincent Boetzel" description="Professional certifications and credentials.">
+  <Container class="py-16 md:py-24">
+    <h1 class="text-display font-semibold text-text-primary mb-4">Certificates</h1>
+    <p class="text-sm font-mono text-text-tertiary mb-10">// professional credentials</p>
+
+    {CERTIFICATES.length > 0 ? (
+      <div class="space-y-4">
+        {CERTIFICATES.map((cert) => (
+          <div class="flex items-start justify-between rounded-lg border border-border bg-surface p-4 border-l-2 border-accent/30">
+            <div class="flex flex-col gap-1">
+              <h2 class="text-base font-medium text-text-primary">
+                {cert.credentialUrl ? (
+                  <a href={cert.credentialUrl} target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">
+                    {cert.name}
+                  </a>
+                ) : (
+                  cert.name
+                )}
+              </h2>
+              <p class="text-sm text-text-secondary font-mono">{cert.issuer}</p>
+            </div>
+            <div class="flex flex-col items-end gap-1 shrink-0">
+              <Badge variant="default" size="sm">{cert.date}</Badge>
+              {cert.expires && (
+                <span class="text-xs text-text-tertiary font-mono">Expires {cert.expires}</span>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <p class="text-text-secondary font-mono text-sm">No certificates listed yet.</p>
+    )}
+  </Container>
+</BaseLayout>

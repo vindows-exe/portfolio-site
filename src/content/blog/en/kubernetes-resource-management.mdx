@@ -1,0 +1,21 @@
+---
+title: "Kubernetes Resource Management"
+description: "Setting requests and limits without cargo culting"
+publishedAt: 2026-06-30
+tags: ["kubernetes", "infrastructure", "performance"]
+---
+
+## The golden ratio
+
+Setting CPU and memory requests is the most common source of cluster inefficiency. Most teams either over-allocate (wasting 40%+ of capacity) or under-allocate (causing OOM kills and CPU throttling).
+
+### A systematic approach
+
+1. **Profile for 7 days** with a monitoring tool (Grafana + Prometheus)
+2. Set **requests** at the P50 (median) of your profile
+3. Set **limits** at the P95 (or 2x requests, whichever is higher)
+4. Review monthly — your metrics change as your code changes
+
+### What about VPA?
+
+The Vertical Pod Autoscaler is a great recommendation engine. Run it in `Off` mode for a week and apply its suggestions manually. The `Auto` mode restarts pods too aggressively for production use.

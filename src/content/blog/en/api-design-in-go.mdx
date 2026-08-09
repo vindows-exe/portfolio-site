@@ -1,0 +1,38 @@
+---
+title: "The Art of API Design in Go"
+description: "Practical patterns for building maintainable HTTP services"
+publishedAt: 2026-07-15
+tags: ["go", "api-design", "rest"]
+---
+
+## Principles over frameworks
+
+Frameworks come and go. The principles of good API design are timeless.
+
+### 1. Explicit error handling
+
+Go's error-as-value pattern is not a bug — it's the feature. Don't hide errors behind middleware magic.
+
+```go
+type APIError struct {
+    Code    int    `json:"code"`
+    Message string `json:"message"`
+    Detail  string `json:"detail,omitempty"`
+}
+
+func (e *APIError) Error() string { return e.Message }
+
+func respond(w http.ResponseWriter, status int, v any) {
+    w.Header().Set("Content-Type", "application/json")
+    w.WriteHeader(status)
+    json.NewEncoder(w).Encode(v)
+}
+```
+
+### 2. Version through content negotiation
+
+URL versioning (`/v1/users`) is an anti-pattern. Use `Accept` headers instead. Your API surface changes slower than you think.
+
+### 3. Idempotency keys
+
+If your API mutates state and a client might retry, you need idempotency. A UUID sent as `Idempotency-Key` header, stored with the response, costs little and prevents entire classes of bugs.

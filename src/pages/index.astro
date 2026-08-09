@@ -19,12 +19,12 @@ try {
   // Not available during early dev
 }
 
-const projects: CollectionEntry<'projects'>[] = (await getCollection('projects'))
+const projects: CollectionEntry<'projects'>[] = (await getCollection('projects', ({ id }: { id: string }) => id.startsWith('en/')))
   .filter((p: CollectionEntry<'projects'>) => p.data.featured !== false)
   .sort((a: CollectionEntry<'projects'>, b: CollectionEntry<'projects'>) => (a.data.order ?? 99) - (b.data.order ?? 99))
   .slice(0, 3);
 
-const posts: CollectionEntry<'blog'>[] = (await getCollection('blog'))
+const posts: CollectionEntry<'blog'>[] = (await getCollection('blog', ({ id }: { id: string }) => id.startsWith('en/')))
   .filter((p: CollectionEntry<'blog'>) => !p.data.draft)
   .sort((a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
   .slice(0, 3);
@@ -36,5 +36,5 @@ const posts: CollectionEntry<'blog'>[] = (await getCollection('blog'))
   <TechRegister categories={SKILLS} />
   {githubStats && <GitHubDashboard data={githubStats} />}
   <BlogPreview posts={posts} />
-  <Certificates items={CERTIFICATES} />
+  <Certificates items={CERTIFICATES.slice(0, 3)} />
 </BaseLayout>

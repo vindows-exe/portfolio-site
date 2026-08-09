@@ -3,9 +3,9 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import ProjectLayout from '@/layouts/ProjectLayout.astro';
 
 export async function getStaticPaths() {
-  const projects: CollectionEntry<'projects'>[] = await getCollection('projects');
+  const projects: CollectionEntry<'projects'>[] = await getCollection('projects', ({ id }: { id: string }) => id.startsWith('en/'));
   return projects.map((project: CollectionEntry<'projects'>) => ({
-    params: { slug: project.slug },
+    params: { slug: project.slug.replace(/^en\//, '') },
     props: { project },
   }));
 }

@@ -12,30 +12,38 @@ export interface Props {
 <Section id="certificates" title="Certificates" description="professional credentials" variant="alt">
   <Container>
     {Astro.props.items.length > 0 ? (
-      <div class="space-y-4">
-        {Astro.props.items.map((cert) => (
-          <div class="flex items-start justify-between rounded-lg border border-border bg-surface p-4 border-l-2 border-accent/30">
-            <div class="flex flex-col gap-1">
-              <h3 class="text-base font-medium text-text-primary">
-                {cert.credentialUrl ? (
-                  <a href={cert.credentialUrl} target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">
-                    {cert.name}
-                  </a>
-                ) : (
-                  cert.name
+      <>
+        <div class="space-y-4">
+          {Astro.props.items.map((cert) => (
+            <div class="flex items-start justify-between rounded-lg border border-border bg-surface p-4 border-l-2 border-accent/30">
+              <div class="flex flex-col gap-1">
+                <h3 class="text-base font-medium text-text-primary">
+                  {cert.credentialUrl ? (
+                    <a href={cert.credentialUrl} target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">
+                      {cert.name}
+                    </a>
+                  ) : (
+                    cert.name
+                  )}
+                </h3>
+                <p class="text-sm text-text-secondary font-mono">{cert.issuer}</p>
+              </div>
+              <div class="flex flex-col items-end gap-1 shrink-0">
+                <Badge variant="default" size="sm">{cert.date}</Badge>
+                {cert.expires && (
+                  <span class="text-xs text-text-tertiary font-mono">Expires {cert.expires}</span>
                 )}
-              </h3>
-              <p class="text-sm text-text-secondary font-mono">{cert.issuer}</p>
+              </div>
             </div>
-            <div class="flex flex-col items-end gap-1 shrink-0">
-              <Badge variant="default" size="sm">{cert.date}</Badge>
-              {cert.expires && (
-                <span class="text-xs text-text-tertiary font-mono">Expires {cert.expires}</span>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+        <a
+          href="/certificates"
+          class="mt-8 inline-flex items-center gap-1 text-sm font-mono text-text-secondary hover:text-accent transition-colors"
+        >
+          View all certificates &rarr;
+        </a>
+      </>
     ) : (
       <p class="text-text-secondary font-mono text-sm">No certificates listed yet.</p>
     )}

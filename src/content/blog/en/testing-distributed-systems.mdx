@@ -1,0 +1,31 @@
+---
+title: "Testing Distributed Systems"
+description: "From integration tests to chaos engineering"
+publishedAt: 2026-07-28
+tags: ["testing", "distributed-systems", "go"]
+---
+
+## Levels of confidence
+
+Unit tests give you ~60% confidence. Integration tests push you to ~85%. For the remaining 15%, you need **adversarial testing**.
+
+### Testcontainers: the baseline
+
+Every repository I own has a `docker-compose.test.yml` or uses Testcontainers. If your database tests mock `sql.DB`, you're not testing — you're guessing.
+
+```go
+func TestRepository(t *testing.T) {
+    ctx := context.Background()
+    pg, _ := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
+        ContainerRequest: testcontainers.ContainerRequest{
+            Image: "postgres:16-alpine",
+        },
+        Started: true,
+    })
+    // test against real PostgreSQL
+}
+```
+
+### Chaos: beyond the happy path
+
+The only way to know your system survives a partition is to induce one. Start with network latency injection before moving to pod kills or DNS failures.
