@@ -10,7 +10,11 @@ export interface Props {
 }
 ---
 
-<section id="hero" aria-labelledby="hero-heading" class="py-24 md:py-32">
+<section
+  id="hero"
+  aria-labelledby="hero-heading"
+  class="hero-grid py-28 md:py-40"
+>
   <Container>
     <div class="flex flex-col items-center text-center">
       <h1 id="hero-heading" class="text-hero font-bold text-text-primary tracking-tight">
@@ -22,6 +26,13 @@ export interface Props {
       <p class="mt-4 text-lg text-text-secondary max-w-xl">
         {Astro.props.tagline}
       </p>
+      <div class="mt-6 flex items-center gap-4 text-xs font-mono text-text-tertiary">
+        <span>15+ years experience</span>
+        <span class="text-border-subtle" aria-hidden="true">|</span>
+        <span>Java &middot; Go &middot; TypeScript</span>
+        <span class="text-border-subtle" aria-hidden="true">|</span>
+        <span>Kubernetes &middot; AWS</span>
+      </div>
       <nav aria-label="Social links" class="mt-8 flex items-center gap-6">
         {Astro.props.socials.map((social) => (
           <a
@@ -38,3 +49,15 @@ export interface Props {
     </div>
   </Container>
 </section>
+
+<style>
+  .hero-grid {
+    background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  :root:not(.dark) .hero-grid {
+    background-image: linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+  }
+</style>
