@@ -1,9 +1,9 @@
 <script is:inline>
   (function () {
-    var stored = localStorage.getItem('lang');
-    var path = window.location.pathname;
+    let stored = localStorage.getItem('lang');
+    const path = window.location.pathname;
     if (!stored) {
-      var browserLang = navigator.language || '';
+      const browserLang = navigator.language || '';
       stored = browserLang.startsWith('de') ? 'de' : 'en';
       localStorage.setItem('lang', stored);
     }
