@@ -5,15 +5,18 @@ export interface Props {
   description?: string;
   class?: string;
   variant?: 'default' | 'alt';
+  padding?: 'default' | 'spacious';
 }
 
-const { id, title, description, class: className, variant = 'default' } = Astro.props;
+const { id, title, description, class: className, variant = 'default', padding = 'default' } = Astro.props;
+
+const paddingClass = padding === 'spacious' ? 'py-20 md:py-28' : 'py-16 md:py-24';
 ---
 
-<section id={id} aria-labelledby={`${id}-heading`} class={`py-16 md:py-24 ${variant === 'alt' ? 'bg-surface' : 'bg-canvas'} ${className ?? ''}`}>
+<section id={id} aria-labelledby={`${id}-heading`} class={`${paddingClass} ${variant === 'alt' ? 'bg-surface' : 'bg-canvas'} ${className ?? ''}`}>
   {title && (
     <div class="mb-12">
-      <h2 id={`${id}-heading`} class="text-display font-semibold text-text-primary">{title}</h2>
+      <h2 id={`${id}-heading`} class="text-display font-medium tracking-tight text-text-primary">{title}</h2>
       {description && (
         <div class="flex items-baseline gap-2">
           <span class="text-xs font-mono text-text-tertiary select-none">//</span>
