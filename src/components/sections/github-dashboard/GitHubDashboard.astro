@@ -11,6 +11,27 @@ export interface Props {
 const { data } = Astro.props;
 const isFallback = data.source === 'fallback';
 
+const repoCount = data.repoStats.length;
+const totalStars = data.repoStats.reduce((sum, r) => sum + r.stars, 0);
+
+const langFrequency = new Map<string, number>();
+for (const repo of data.repoStats) {
+  if (repo.primaryLanguage) {
+    langFrequency.set(repo.primaryLanguage, (langFrequency.get(repo.primaryLanguage) ?? 0) + 1);
+  }
+}
+let topLanguage = 'N/A';
+let topLangCount = 0;
+for (const [lang, count] of langFrequency) {
+  if (count > topLangCount) {
+    topLanguage = lang;
+    topLangCount = count;
+  }
+}
+
+const pinnedNames = new Set(data.pinnedRepos.map((r) => r.name));
+const extraPinnedRepos = data.pinnedRepos.filter((r) => !data.repoStats.some((s) => s.name === r.name));
+
 const heatmapColors: Record<number, string> = {
   0: 'bg-surface-raised',
   1: 'bg-accent-subtle opacity-30',
@@ -28,9 +49,26 @@ const heatmapColors: Record<number, string> = {
       </p>
     )}
 
+    {repoCount > 0 && (
+      <div class="grid grid-cols-3 gap-3 mb-8">
+        <div class="rounded-lg border border-border bg-surface p-3 text-center">
+          <span class="block text-xl font-bold text-accent font-mono">{repoCount}</span>
+          <span class="text-xs text-text-tertiary font-mono">Repositories</span>
+        </div>
+        <div class="rounded-lg border border-border bg-surface p-3 text-center">
+          <span class="block text-xl font-bold text-accent font-mono">{totalStars}</span>
+          <span class="text-xs text-text-tertiary font-mono">Total Stars</span>
+        </div>
+        <div class="rounded-lg border border-border bg-surface p-3 text-center">
+          <span class="block text-xl font-bold text-accent font-mono">{topLanguage}</span>
+          <span class="text-xs text-text-tertiary font-mono">Top Language</span>
+        </div>
+      </div>
+    )}
+
     {data.contributionCalendar && (
       <div class="mb-10">
-        <h3 class="mb-2 text-sm font-mono font-medium text-text-tertiary">
+        <h3 class="mb-3 text-sm font-mono font-medium text-text-tertiary">
           {data.contributionCalendar.totalContributions} contributions in the last year
         </h3>
         <div class="overflow-x-auto pb-2">
@@ -56,22 +94,27 @@ const heatmapColors: Record<number, string> = {
       </div>
     )}
 
-    {data.repoStats.length > 0 && (
-      <div class="mb-10">
-        <h3 class="mb-4 text-sm font-mono font-medium text-text-tertiary uppercase tracking-wider">Repository Stats</h3>
+    {(data.repoStats.length > 0 || extraPinnedRepos.length > 0) && (
+      <div>
+        <h3 class="mb-4 text-sm font-mono font-medium text-text-tertiary uppercase tracking-wider">Repositories</h3>
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {data.repoStats.map((repo) => (
             <Card>
               <div class="flex items-start justify-between">
                 <div class="min-w-0">
-                  <a
-                    href={repo.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="font-mono text-sm font-medium text-text-primary hover:text-accent transition-colors truncate block"
-                  >
-                    {repo.name}
-                  </a>
+                  <div class="flex items-center gap-1.5">
+                    {pinnedNames.has(repo.name) && (
+                      <span class="inline-block h-2 w-2 rounded-full bg-accent shrink-0" aria-label="Pinned repository"></span>
+                    )}
+                    <a
+                      href={repo.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="font-mono text-sm font-medium text-text-primary hover:text-accent transition-colors truncate block"
+                    >
+                      {repo.name}
+                    </a>
+                  </div>
                   {repo.description && (
                     <p class="mt-1 text-xs text-text-tertiary line-clamp-2">{repo.description}</p>
                   )}
@@ -86,30 +129,36 @@ const heatmapColors: Record<number, string> = {
               </div>
             </Card>
           ))}
-        </div>
-      </div>
-    )}
-
-    {data.pinnedRepos.length > 0 && (
-      <div>
-        <h3 class="mb-4 text-sm font-mono font-medium text-text-tertiary uppercase tracking-wider">Pinned Repositories</h3>
-        <div class="grid gap-4 sm:grid-cols-2">
-          {data.pinnedRepos.map((repo) => (
+          {extraPinnedRepos.map((repo) => (
             <Card>
-              <a
-                href={repo.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="font-mono text-sm font-medium text-text-primary hover:text-accent transition-colors"
-              >
-                {repo.name}
-              </a>
-              {repo.description && (
-                <p class="mt-1 text-xs text-text-tertiary">{repo.description}</p>
-              )}
+              <div class="flex items-start justify-between">
+                <div class="min-w-0">
+                  <div class="flex items-center gap-1.5">
+                    <span class="inline-block h-2 w-2 rounded-full bg-accent shrink-0" aria-label="Pinned repository"></span>
+                    <a
+                      href={repo.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="font-mono text-sm font-medium text-text-primary hover:text-accent transition-colors"
+                    >
+                      {repo.name}
+                    </a>
+                  </div>
+                  {repo.description && (
+                    <p class="mt-1 text-xs text-text-tertiary">{repo.description}</p>
+                  )}
+                </div>
+              </div>
               <div class="mt-3 flex items-center gap-4 text-xs text-text-tertiary">
                 {repo.language && (
-                  <span class="font-mono">{repo.language.name}</span>
+                  <span class="font-mono inline-flex items-center gap-1">
+                    {repo.language.color ? (
+                      <span class="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: repo.language.color }}></span>
+                    ) : (
+                      <span class="inline-block h-2 w-2 rounded-full bg-border"></span>
+                    )}
+                    {repo.language.name}
+                  </span>
                 )}
                 <span>&star; {repo.stars}</span>
                 <span>fork {repo.forks}</span>
