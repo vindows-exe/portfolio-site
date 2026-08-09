@@ -4,9 +4,9 @@ import Container from '@/components/ui/Container.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { t, type Locale } from '@/i18n';
 
-const locale = 'en' as Locale;
+const locale: Locale = 'de';
 
-const posts: CollectionEntry<'blog'>[] = (await getCollection('blog', ({ id }: { id: string }) => id.startsWith('en/')))
+const posts: CollectionEntry<'blog'>[] = (await getCollection('blog', ({ id }: { id: string }) => id.startsWith('de/')))
   .filter((p: CollectionEntry<'blog'>) => !p.data.draft)
   .sort((a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
 ---
@@ -18,11 +18,11 @@ const posts: CollectionEntry<'blog'>[] = (await getCollection('blog', ({ id }: {
     {posts.length > 0 ? (
       <div class="space-y-6">
         {posts.map((post: CollectionEntry<'blog'>) => (
-          <a href={`/blog/${post.slug.replace(/^en\//, '')}`} class="block rounded-lg border border-border bg-surface p-6 transition-colors hover:border-accent/30 hover:bg-surface-raised group">
+          <a href={`/de/blog/${post.slug.replace(/^de\//, '')}`} class="block rounded-lg border border-border bg-surface p-6 transition-colors hover:border-accent/30 hover:bg-surface-raised group">
             <div class="flex flex-col gap-2">
               <div class="flex items-center gap-3 text-xs font-mono text-text-tertiary">
                 <time datetime={post.data.publishedAt.toISOString()}>
-                  {post.data.publishedAt.toLocaleDateString(locale === 'de' ? 'de-DE' : 'en-US', {
+                  {post.data.publishedAt.toLocaleDateString('de-DE', {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric',

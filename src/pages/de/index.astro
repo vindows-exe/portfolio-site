@@ -1,0 +1,43 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/sections/hero/Hero.astro';
+import ProjectShowcase from '@/components/sections/project-showcase/ProjectShowcase.astro';
+import TechRegister from '@/components/sections/tech-register/TechRegister.astro';
+import GitHubDashboard from '@/components/sections/github-dashboard/GitHubDashboard.astro';
+import BlogPreview from '@/components/sections/blog-preview/BlogPreview.astro';
+import Certificates from '@/components/sections/certificates/Certificates.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { SITE } from '@/data/site';
+import { SKILLS } from '@/data/skills';
+import { CERTIFICATES } from '@/data/certificates';
+import type { GitHubStatsSnapshot } from '@/types/github';
+import { t, type Locale } from '@/i18n';
+
+const locale: Locale = 'de';
+
+let githubStats: GitHubStatsSnapshot | null = null;
+try {
+  githubStats = (await import('@/data/generated/github-stats.json')).default as GitHubStatsSnapshot;
+} catch {
+  // Not available during early dev
+}
+
+const projects: CollectionEntry<'projects'>[] = (await getCollection('projects', ({ id }: { id: string }) => id.startsWith('en/')))
+  .filter((p: CollectionEntry<'projects'>) => p.data.featured !== false)
+  .sort((a: CollectionEntry<'projects'>, b: CollectionEntry<'projects'>) => (a.data.order ?? 99) - (b.data.order ?? 99))
+  .slice(0, 3);
+
+const posts: CollectionEntry<'blog'>[] = (await getCollection('blog', ({ id }: { id: string }) => id.startsWith('de/')))
+  .filter((p: CollectionEntry<'blog'>) => !p.data.draft)
+  .sort((a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
+  .slice(0, 3);
+---
+
+<BaseLayout title={t(locale, 'site.title')} description={t(locale, 'site.description')} locale={locale}>
+  <Hero name={SITE.name} handle={SITE.handle} tagline={t(locale, 'site.tagline')} socials={SITE.socials} locale={locale} />
+  <ProjectShowcase projects={projects} locale={locale} />
+  <TechRegister categories={SKILLS} locale={locale} />
+  {githubStats && <GitHubDashboard data={githubStats} locale={locale} />}
+  <BlogPreview posts={posts} locale={locale} />
+  <Certificates items={CERTIFICATES.slice(0, 3)} locale={locale} />
+</BaseLayout>

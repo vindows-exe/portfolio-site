@@ -3,12 +3,12 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import BlogPostLayout from '@/layouts/BlogPostLayout.astro';
 import { type Locale } from '@/i18n';
 
-const locale: Locale = 'en';
+const locale: Locale = 'de';
 
 export async function getStaticPaths() {
-  const posts: CollectionEntry<'blog'>[] = await getCollection('blog', ({ id }: { id: string }) => id.startsWith('en/'));
+  const posts: CollectionEntry<'blog'>[] = await getCollection('blog', ({ id }: { id: string }) => id.startsWith('de/'));
   return posts.map((post: CollectionEntry<'blog'>) => ({
-    params: { slug: post.slug.replace(/^en\//, '') },
+    params: { slug: post.slug.replace(/^de\//, '') },
     props: { post },
   }));
 }

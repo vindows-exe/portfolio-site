@@ -2,18 +2,21 @@
 import BaseLayout from './BaseLayout.astro';
 import Container from '@/components/ui/Container.astro';
 import type { CollectionEntry } from 'astro:content';
+import type { Locale } from '@/i18n';
 
 export interface Props {
   post: CollectionEntry<'blog'>;
+  locale?: Locale;
 }
 
-const { post } = Astro.props;
+const { post, locale = 'en' } = Astro.props;
 const { title, description, publishedAt, tags } = post.data;
 ---
 
 <BaseLayout
   title={`${title} — Vincent Boetzel`}
   description={description}
+  locale={locale}
   type="article"
   publishedDate={publishedAt.toISOString()}
 >
@@ -24,7 +27,7 @@ const { title, description, publishedAt, tags } = post.data;
           <h1 class="text-display font-semibold text-text-primary">{title}</h1>
           <div class="mt-4 flex flex-wrap items-center gap-3 text-sm font-mono text-text-tertiary">
             <time datetime={publishedAt.toISOString()}>
-              {publishedAt.toLocaleDateString('en-US', {
+              {publishedAt.toLocaleDateString(locale === 'de' ? 'de-DE' : 'en-US', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',

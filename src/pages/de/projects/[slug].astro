@@ -3,7 +3,7 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import ProjectLayout from '@/layouts/ProjectLayout.astro';
 import { type Locale } from '@/i18n';
 
-const locale: Locale = 'en';
+const locale: Locale = 'de';
 
 export async function getStaticPaths() {
   const projects: CollectionEntry<'projects'>[] = await getCollection('projects', ({ id }: { id: string }) => id.startsWith('en/'));

@@ -42,7 +42,7 @@ const { items, locale = 'en' } = Astro.props;
           ))}
         </div>
         <a
-          href="/certificates"
+          href={locale === 'de' ? '/de/certificates' : '/certificates'}
           class="mt-8 inline-flex items-center gap-1 text-sm font-mono text-text-secondary hover:text-accent transition-colors"
         >
           {t(locale, 'certificates.viewAll')}
