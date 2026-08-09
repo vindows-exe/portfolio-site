@@ -1,5 +1,5 @@
 ---
-import { t, type Locale } from '@/i18n';
+import { localizedUrl, type Locale } from '@/i18n';
 
 export interface Props {
   title: string;
@@ -26,12 +26,19 @@ const {
 const ogTitle = title;
 const siteUrl = 'https://REPLACE-WITH-FINAL-DOMAIN.dev';
 const ogImageUrl = ogImage ? new URL(ogImage, siteUrl).toString() : undefined;
-const canonical = canonicalUrl ?? Astro.url.pathname;
+const currentPath = Astro.url.pathname;
+const canonical = canonicalUrl ?? (siteUrl + currentPath);
+const enPath = locale === 'de' ? localizedUrl(currentPath, 'en') : currentPath;
+const dePath = locale === 'en' ? localizedUrl(currentPath, 'de') : currentPath;
 ---
 
 <title>{title}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonical} />
+
+<link rel="alternate" hreflang="en" href={siteUrl + enPath} />
+<link rel="alternate" hreflang="de" href={siteUrl + dePath} />
+
 <meta property="og:type" content={type} />
 <meta property="og:title" content={ogTitle} />
 <meta property="og:description" content={description} />
