@@ -22,7 +22,7 @@ const categoryKey: Record<SkillCategory, `category.${SkillCategory}`> = {
 };
 ---
 
-<Section id="skills" title="Skills" description="technologies I work with across the stack" padding="spacious">
+<Section id="skills" title={t(locale, 'section.skills')} description={t(locale, 'section.skills.desc')} padding="spacious">
   <Container>
     <div class="space-y-10">
       {categories.map((group) => (

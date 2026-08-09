@@ -15,6 +15,7 @@ export const SKILLS: SkillCategoryGroup[] = [
       { name: 'Spring Boot', category: 'framework', proficiency: 'core' },
       { name: 'Angular', category: 'framework', proficiency: 'familiar' },
       { name: 'React', category: 'framework', proficiency: 'familiar' },
+      { name: 'adSCAILE', category: 'framework', proficiency: 'proficient' },
     ],
   },
   {
@@ -43,12 +44,6 @@ export const SKILLS: SkillCategoryGroup[] = [
     skills: [
       { name: 'Data Spaces', category: 'methodology', proficiency: 'proficient' },
       { name: 'Requirements Engineering (IREB)', category: 'methodology', proficiency: 'proficient' },
-    ],
-  },
-  {
-    category: 'quality-assurance',
-    skills: [
-      { name: 'adSCAILE', category: 'quality-assurance', proficiency: 'proficient' },
     ],
   },
 ];

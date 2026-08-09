@@ -2,15 +2,16 @@
   (function () {
     let stored = localStorage.getItem('lang');
     const path = window.location.pathname;
+    const suffix = window.location.search + window.location.hash;
     if (!stored) {
       const browserLang = navigator.language || '';
       stored = browserLang.startsWith('de') ? 'de' : 'en';
       localStorage.setItem('lang', stored);
     }
     if (stored === 'de' && !path.startsWith('/de')) {
-      window.location.replace('/de' + path);
+      window.location.replace('/de' + path + suffix);
     } else if (stored === 'en' && path.startsWith('/de')) {
-      window.location.replace(path.replace(/^\/de/, '') || '/');
+      window.location.replace(path.replace(/^\/de/, '') || '/' + suffix);
     }
   })();
 </script>

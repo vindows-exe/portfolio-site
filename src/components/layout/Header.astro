@@ -1,5 +1,6 @@
 ---
 import { NAV_ITEMS } from '@/config/constants';
+import { SITE } from '@/data/site';
 import { t, type Locale } from '@/i18n';
 
 export interface Props {
@@ -11,14 +12,14 @@ const { locale = 'en' } = Astro.props;
 
 <header class="sticky top-0 z-40 border-b border-border bg-canvas/95 backdrop-blur-sm">
   <nav class="mx-auto flex max-w-shell items-center justify-between px-4 py-3" aria-label="Main navigation">
-    <a href="/" class="font-mono text-sm font-medium text-text-primary hover:text-accent transition-colors" aria-label="Home">
-      vindows
+    <a href={locale === 'de' ? '/de' : '/'} class="font-mono text-sm font-medium text-text-primary hover:text-accent transition-colors" aria-label="Home">
+      {SITE.handle}
     </a>
 
     <div class="flex items-center gap-1">
       {NAV_ITEMS.map((item) => (
         <a
-          href={item.href}
+          href={locale === 'de' ? '/de' + item.href : item.href}
           class="px-3 py-1.5 text-sm font-mono rounded-md transition-colors text-text-secondary hover:text-text-primary hover:bg-surface-raised"
         >
           {t(locale, item.labelKey)}
@@ -70,18 +71,19 @@ const { locale = 'en' } = Astro.props;
     updateIcons(newTheme);
   });
 
-  document.getElementById('lang-en')?.addEventListener('click', () => {
-    if (window.location.pathname.startsWith('/de')) {
+  function switchLang(to: string) {
+    const path = window.location.pathname;
+    const suffix = window.location.search + window.location.hash;
+    if (to === 'en' && path.startsWith('/de')) {
       sessionStorage.setItem('lang-switch-pos', window.scrollY.toString());
       localStorage.setItem('lang', 'en');
-      window.location.href = window.location.pathname.replace(/^\/de/, '') || '/' + window.location.hash;
-    }
-  });
-  document.getElementById('lang-de')?.addEventListener('click', () => {
-    if (!window.location.pathname.startsWith('/de')) {
+      window.location.href = path.replace(/^\/de/, '') || '/' + suffix;
+    } else if (to === 'de' && !path.startsWith('/de')) {
       sessionStorage.setItem('lang-switch-pos', window.scrollY.toString());
       localStorage.setItem('lang', 'de');
-      window.location.href = '/de' + window.location.pathname + window.location.hash;
+      window.location.href = '/de' + path + suffix;
     }
-  });
+  }
+  document.getElementById('lang-en')?.addEventListener('click', () => switchLang('en'));
+  document.getElementById('lang-de')?.addEventListener('click', () => switchLang('de'));
 </script>

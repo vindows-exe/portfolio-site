@@ -1,6 +1,7 @@
 export const en = {
   'site.title': 'Vincent Boetzel – Student & Working Student',
-  'site.description': 'Master student in Business Information Systems and working student with 3+ years of experience in Java, TypeScript, and Docker.',
+  'site.description':
+    'Master student in Business Information Systems and working student with 3+ years of experience in Java, TypeScript, and Docker.',
   'site.tagline': 'Master Student & Working Student',
   'nav.projects': 'Projects',
   'nav.skills': 'Skills',
@@ -11,13 +12,13 @@ export const en = {
   'hero.techStack': 'Java · TypeScript',
   'hero.infra': 'Docker',
   'section.projects': 'Projects',
-  'section.projects.desc': 'real-world systems built for production',
+  'section.projects.desc': 'Personal projects in detail',
   'section.skills': 'Skills',
   'section.skills.desc': 'technologies I work with across the stack',
   'section.github': 'GitHub',
   'section.github.desc': 'contribution activity and repository metrics',
   'section.blog': 'Blog',
-  'section.blog.desc': 'thoughts on systems engineering',
+  'section.blog.desc': 'thoughts on engineering and content creation',
   'section.certificates': 'Certificates',
   'section.certificates.desc': 'professional credentials',
   'category.language': 'Languages',
@@ -30,7 +31,8 @@ export const en = {
   'blog.viewAll': 'View all posts →',
   'blog.noPosts': 'No posts yet.',
   'blog.pageTitle': 'Blog — Vincent Boetzel',
-  'blog.pageDesc': 'Thoughts on backend engineering, infrastructure, and system design.',
+  'blog.pageDesc':
+    'Thoughts on backend engineering, infrastructure, and system design.',
   'certificates.viewAll': 'View all certificates →',
   'certificates.noCertificates': 'No certificates listed yet.',
   'certificates.expires': 'Expires',
@@ -44,6 +46,9 @@ export const en = {
   'github.repositories': 'Repositories',
   'github.totalStars': 'Total Stars',
   'github.topLanguage': 'Top Language',
-  'github.unavailable': 'GitHub data unavailable — showing sample data. Set GITHUB_TOKEN to fetch live data.',
+  'github.unavailable':
+    'GitHub data unavailable — showing sample data. Set GITHUB_TOKEN to fetch live data.',
   'github.pinned': 'Pinned',
+  'github.contributions': 'contributions in the last year',
+  'github.repositoriesHeading': 'Repositories',
 } as const;
