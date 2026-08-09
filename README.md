@@ -1,69 +1,89 @@
 # portfolio-site
 
-Personal portfolio of **vindows** — Backend & Infrastructure Engineer (Java/Spring Boot, Go, AWS,
-Kubernetes). Built with [Astro](https://astro.build) (static output), Preact islands, Tailwind CSS v4,
-and MDX-backed content collections.
+Personal portfolio of **vindows** — Master Student in Business Information Systems
+and Working Student with 3+ years of experience in Java, TypeScript, and infrastructure.
+
+Built with [Astro](https://astro.build), [Tailwind CSS v4](https://tailwindcss.com), and deployed on [Vercel](https://vercel.com).
+Published at **[vindows.dev](https://vindows.dev)**.
 
 ## Stack
 
 - **Astro** (`output: 'static'`) — islands architecture, zero JS by default
-- **Preact** via `@astrojs/preact` — reserved for future interactive islands (`src/islands/`, currently unused)
-- **Tailwind CSS v4** via `@tailwindcss/vite`
+- **Tailwind CSS v4** via `@tailwindcss/vite` plugin
 - **MDX** + Astro Content Collections for blog posts and project write-ups
 - **TypeScript** (strict mode)
-- **Vitest** for unit tests, **ESLint** + **Prettier** for linting/formatting
+- **IBM Plex Sans / Mono** via Google Fonts
+- **Vercel Analytics** + **Speed Insights** for page views and Core Web Vitals
+
+## Features
+
+- 🌍 **Bilingual (EN/DE)** — URL-prefix strategy with type-safe `t()` function
+- 🌙 **Dark-first design** — amber-accented theme with light mode toggle, persisted in localStorage
+- 📊 **Live GitHub integration** — pinned repos, contribution calendar, and repo stats fetched at build time
+- 📝 **MDX blog** — content collections with Zod-validated frontmatter
+- 🏗️ **Project showcase** — detail pages per project with KPIs and architecture diagrams
+- 📜 **Certificates** — current credentials with expiration dates
+- 📡 **RSS feeds** — separate feeds for EN (`/rss.xml`) and DE (`/de/rss.xml`)
 
 ## Getting started
 
 ```bash
 npm install
-npm run dev
+npm run dev        # fetches GitHub data, starts dev server
 ```
+
+Open `http://localhost:4321` in your browser.
 
 ## Scripts
 
 | Script                  | Description                                                    |
 | ----------------------- | -------------------------------------------------------------- |
-| `npm run dev`           | Start the local dev server                                     |
-| `npm run build`         | Type-safe production build (runs `sync:github` first)          |
+| `npm run dev`           | Sync GitHub data + start dev server                            |
+| `npm run build`         | Production build (runs `sync:github` first)                    |
 | `npm run preview`       | Preview the production build locally                           |
 | `npm run sync:github`   | Fetch GitHub stats into `src/data/generated/github-stats.json` |
-| `npm run lint`          | Lint the codebase with ESLint                                  |
-| `npm run lint:fix`      | Lint and auto-fix                                              |
-| `npm run format`        | Format the codebase with Prettier                              |
-| `npm run format:check`  | Check formatting without writing                               |
-| `npm run typecheck`     | Run `astro check` (TypeScript + Astro template diagnostics)    |
-| `npm run test`          | Run the Vitest test suite once                                 |
-| `npm run test:watch`    | Run Vitest in watch mode                                       |
-| `npm run test:coverage` | Run Vitest with coverage report                                |
+| `npm run typecheck`     | Run `astro check` (TypeScript + Astro diagnostics)             |
+| `npm run lint`          | Lint with ESLint                                               |
+| `npm run format`        | Format with Prettier                                           |
 
 ## Environment variables
 
-Copy `.env.example` to `.env` and fill in the values:
+Create `.env.local` in the project root:
 
 ```
-GITHUB_TOKEN=       # optional; without it, GitHub Pinned Repos + Contribution Calendar fall back to sample data
-GITHUB_USERNAME=vindows
+GITHUB_TOKEN=ghp_xxxxx   # optional; without it, GitHub data falls back to sample data
 ```
 
-The build never fails because of GitHub API issues: without a token, or if the GitHub API is
-unavailable, `npm run sync:github` copies `src/data/generated/github-stats.sample.json` to
-`src/data/generated/github-stats.json` (git-ignored) and exits successfully.
+The build never fails because of a missing token: without it, or if the GitHub API is
+unavailable, `sync:github` copies a sample snapshot and exits successfully.
+
+When deploying on Vercel, set `GITHUB_TOKEN` as an **Environment Variable**
+in Project → Settings → Environment Variables.
 
 ## Project structure
 
-See `src/` for the Astro source. Notable conventions:
+```
+src/
+├── components/
+│   ├── layout/         # Header, Footer, SEOHead, ThemeScript, LangScript
+│   ├── sections/       # Hero, BlogPreview, GitHubDashboard, ProjectShowcase, etc.
+│   └── ui/             # Button, Badge, Card, Section, Container
+├── config/             # Constants (SITE_URL, NAV_ITEMS)
+├── content/            # MDX content collections (blog, projects) — EN + DE
+│   ├── blog/en/        # English blog posts
+│   ├── blog/de/        # German blog posts
+│   ├── projects/en/    # English project write-ups
+│   └── projects/de/    # German project write-ups
+├── data/               # Static data (site metadata, skills, certificates)
+├── i18n/               # Translation dictionaries and type-safe t() function
+├── layouts/            # BaseLayout, ProjectLayout
+├── lib/github/         # Typed REST/GraphQL GitHub client with Zod validation
+├── pages/              # Astro route pages (EN + DE)
+└── styles/             # Tailwind v4 @theme config, CSS custom properties
+```
 
-- `src/components/ui` — small, dependency-free UI primitives (Button, Badge, Card, ...)
-- `src/components/layout` — Header, Footer, SEOHead, ThemeScript
-- `src/components/sections` — one folder per homepage section
-- `src/lib/github` — typed GitHub REST/GraphQL client, consumed only by `scripts/fetch-github-data.ts`
-- `src/content` — Zod-validated MDX content collections (`blog`, `projects`)
-- `src/data` — static site data (site metadata, skills, certificates) + generated GitHub snapshot
+## Deployment
 
-## Known gaps
-
-This section is kept up to date as placeholder assets get replaced with real ones:
-
-- `public/fonts/` — IBM Plex Sans/Mono `.woff2` files are not yet included; see the CSS comment in
-  `src/styles/global.css` for the exact filenames expected.
+The site is deployed on **Vercel**. Every push to `main` triggers a production
+build. `@vercel/analytics` and `@vercel/speed-insights` are wired in
+automatically via `BaseLayout.astro`.
