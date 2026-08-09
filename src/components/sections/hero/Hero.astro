@@ -30,6 +30,9 @@ const { name, handle, tagline, socials, locale = 'en' } = Astro.props;
       <p class="mt-4 text-lg text-text-secondary max-w-xl">
         {tagline}
       </p>
+      <p class="mt-1 text-sm text-text-tertiary max-w-xl font-mono">
+        {t(locale, 'hero.targetRole')}
+      </p>
       <div class="mt-6 flex items-center gap-4 text-xs font-mono text-text-tertiary">
         <span>{t(locale, 'hero.experience')}</span>
         <span class="text-border-subtle" aria-hidden="true">|</span>

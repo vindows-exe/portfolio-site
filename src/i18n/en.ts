@@ -8,6 +8,7 @@ export const en = {
   'nav.github': 'GitHub',
   'nav.blog': 'Blog',
   'nav.certificates': 'Certificates',
+  'hero.targetRole': 'Target: Backend & Infrastructure Engineer',
   'hero.experience': '3+ years experience',
   'hero.techStack': 'Java · TypeScript',
   'hero.infra': 'Docker',
