@@ -1,0 +1,19 @@
+---
+title: "distributed-rate-limiter"
+description: "Ein verteilter, hochperformanter Rate-Limiting-Service zum Schutz von APIs vor Missbrauch und Überlastung — mit Redis-Lua-Token-Buckets, Kafka-Event-Streaming und PostgreSQL-Audit-Logging."
+problem: "APIs müssen vor Missbrauch und Überlastung geschützt werden, aber traditionelle Rate-Limiter mit In-Memory-State skalieren nicht über mehrere Instanzen, während synchrones Datenbank-Logging unter hohem Durchsatz inakzeptable Latenz erzeugt."
+solution: "Eine zweistufige Architektur: synchrone Redis-Lua-Token-Buckets für Rate-Entscheidungen unter 5ms (Fail-Open bei Redis-Ausfall), mit asynchronem Kafka-Event-Streaming für die Audit-Persistenz — durch getrennte Rate-Limiter- und Audit-Consumer-Services."
+stack: ["Java", "Spring Boot", "Redis", "Apache Kafka", "PostgreSQL", "Docker", "Testcontainers", "k6"]
+kpis:
+  - label: "P99-Latenz"
+    value: "<5ms"
+  - label: "Architekturentscheidungen"
+    value: "5 ADRs"
+  - label: "Teststrategie"
+    value: "Testcontainers"
+  - label: "Resilienz"
+    value: "Fail-Open"
+repoUrl: "https://github.com/vindows-exe/distributed-rate-limiter"
+featured: true
+order: 2
+---
