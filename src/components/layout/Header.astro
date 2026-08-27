@@ -10,60 +10,86 @@ export interface Props {
 const { locale = 'en' } = Astro.props;
 ---
 
-<header class="sticky top-0 z-40 border-b border-border bg-canvas/95 backdrop-blur-sm relative">
-  <nav class="mx-auto flex max-w-shell items-center justify-between px-4 py-3" aria-label="Main navigation">
-    <a href={locale === 'de' ? '/de' : '/'} class="font-mono text-sm font-medium text-text-primary hover:text-accent transition-colors" aria-label="Home">
+<header
+  class="border-border bg-canvas/95 relative sticky top-0 z-40 border-b backdrop-blur-sm"
+>
+  <nav
+    class="max-w-shell mx-auto flex items-center justify-between px-4 py-3"
+    aria-label="Main navigation"
+  >
+    <a
+      href={locale === 'de' ? '/de' : '/'}
+      class="text-text-primary hover:text-accent font-mono text-sm font-medium transition-colors"
+      aria-label="Home"
+    >
       {SITE.handle}
     </a>
 
     <!-- Right side: nav (desktop) + lang + theme + hamburger -->
-    <div class="flex items-center gap-1 ml-auto">
-      <div class="hidden md:flex items-center gap-1">
-        {NAV_ITEMS.map((item) => (
-          <a
-            href={locale === 'de' ? '/de' + item.href : item.href}
-            class="shrink-0 px-3 py-1.5 text-sm font-mono rounded-md transition-colors text-text-secondary hover:text-text-primary hover:bg-surface-raised"
-          >
-            {t(locale, item.labelKey)}
-          </a>
-        ))}
+    <div class="ml-auto flex items-center gap-1">
+      <div class="hidden items-center gap-1 md:flex">
+        {
+          NAV_ITEMS.map((item) => (
+            <a
+              href={locale === 'de' ? '/de' + item.href : item.href}
+              class="text-text-secondary hover:text-text-primary hover:bg-surface-raised shrink-0 rounded-md px-3 py-1.5 font-mono text-sm transition-colors"
+            >
+              {t(locale, item.labelKey)}
+            </a>
+          ))
+        }
       </div>
 
-      <div class="flex items-center gap-0.5 border-l border-border pl-2">
-        <button id="lang-en"
+      <div class="border-border flex items-center gap-0.5 border-l pl-2">
+        <button
+          id="lang-en"
           class={`cursor-pointer px-1.5 py-0.5 text-xs font-mono rounded transition-colors ${locale === 'en' ? 'text-accent bg-accent-subtle' : 'text-text-tertiary hover:text-text-secondary'}`}
-          aria-label="Switch to English"
-        >EN</button>
-        <button id="lang-de"
+          aria-label="Switch to English">EN</button
+        >
+        <button
+          id="lang-de"
           class={`cursor-pointer px-1.5 py-0.5 text-xs font-mono rounded transition-colors ${locale === 'de' ? 'text-accent bg-accent-subtle' : 'text-text-tertiary hover:text-text-secondary'}`}
-          aria-label="Switch to German"
-        >DE</button>
+          aria-label="Switch to German">DE</button
+        >
         <button
           id="theme-toggle"
-          class="ml-1.5 rounded-md px-2 py-1.5 text-sm font-mono text-text-secondary hover:text-text-primary hover:bg-surface-raised transition-colors"
+          class="text-text-secondary hover:text-text-primary hover:bg-surface-raised ml-1.5 rounded-md px-2 py-1.5 font-mono text-sm transition-colors"
           aria-label="Toggle theme"
         >
           <span id="theme-icon-light" aria-hidden="true">&#9788;</span>
-          <span id="theme-icon-dark" aria-hidden="true" class="hidden">&#9790;</span>
+          <span id="theme-icon-dark" aria-hidden="true" class="hidden"
+            >&#9790;</span
+          >
         </button>
-        <button id="menu-toggle" class="md:hidden ml-1.5 rounded-md px-2 py-1.5 text-sm text-text-secondary hover:text-text-primary hover:bg-surface-raised transition-colors" aria-label="Toggle menu" aria-expanded="false">
+        <button
+          id="menu-toggle"
+          class="text-text-secondary hover:text-text-primary hover:bg-surface-raised ml-1.5 rounded-md px-2 py-1.5 text-sm transition-colors md:hidden"
+          aria-label="Toggle menu"
+          aria-expanded="false"
+        >
           <span id="menu-icon-open">☰</span>
           <span id="menu-icon-close" class="hidden">✕</span>
         </button>
       </div>
     </div>
+  </nav>
 
   <!-- Mobile dropdown (overlay under header) -->
-  <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 right-0 border-b border-border bg-canvas/95 backdrop-blur-sm shadow-lg">
+  <div
+    id="mobile-menu"
+    class="border-border bg-canvas/95 absolute top-full right-0 left-0 hidden border-b shadow-lg backdrop-blur-sm md:hidden"
+  >
     <div class="flex flex-col gap-1 px-4 py-3">
-      {NAV_ITEMS.map((item) => (
-        <a
-          href={locale === 'de' ? '/de' + item.href : item.href}
-          class="block px-3 py-2 text-sm font-mono rounded-md transition-colors text-text-secondary hover:text-text-primary hover:bg-surface-raised"
-        >
-          {t(locale, item.labelKey)}
-        </a>
-      ))}
+      {
+        NAV_ITEMS.map((item) => (
+          <a
+            href={locale === 'de' ? '/de' + item.href : item.href}
+            class="text-text-secondary hover:text-text-primary hover:bg-surface-raised block rounded-md px-3 py-2 font-mono text-sm transition-colors"
+          >
+            {t(locale, item.labelKey)}
+          </a>
+        ))
+      }
     </div>
   </div>
 </header>
@@ -83,7 +109,9 @@ const { locale = 'en' } = Astro.props;
     darkIcon?.classList.toggle('hidden', !isDark);
   }
 
-  updateIcons(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+  updateIcons(
+    document.documentElement.classList.contains('dark') ? 'dark' : 'light',
+  );
 
   toggle?.addEventListener('click', () => {
     const isDark = document.documentElement.classList.contains('dark');
@@ -114,6 +142,10 @@ const { locale = 'en' } = Astro.props;
       window.location.href = '/de' + path + suffix;
     }
   }
-  document.getElementById('lang-en')?.addEventListener('click', () => switchLang('en'));
-  document.getElementById('lang-de')?.addEventListener('click', () => switchLang('de'));
+  document
+    .getElementById('lang-en')
+    ?.addEventListener('click', () => switchLang('en'));
+  document
+    .getElementById('lang-de')
+    ?.addEventListener('click', () => switchLang('de'));
 </script>

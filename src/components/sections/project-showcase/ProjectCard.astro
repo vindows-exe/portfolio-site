@@ -22,65 +22,118 @@ const {
 } = Astro.props as Props;
 ---
 
-<article class="rounded-lg border border-border bg-surface p-6 transition-colors hover:border-border-subtle border-l-2 border-accent/30">
+<article
+  class="border-border bg-surface hover:border-border-subtle border-accent/30 rounded-lg border border-l-2 p-6 transition-colors"
+>
   <div class="flex flex-col gap-6 md:flex-row md:gap-8">
     <div class="flex-1 space-y-4">
-      <h3 class="text-2xl font-semibold text-text-primary">{title}</h3>
+      <h3 class="text-text-primary text-2xl font-semibold">{title}</h3>
 
       <div>
-          <h4 class="mb-1 text-sm font-mono font-medium text-text-tertiary uppercase tracking-wider">{t(locale, 'project.problem')}</h4>
+        <h4
+          class="text-text-tertiary mb-1 font-mono text-sm font-medium tracking-wider uppercase"
+        >
+          {t(locale, 'project.problem')}
+        </h4>
         <p class="text-text-secondary leading-relaxed">{problem}</p>
       </div>
 
       <div>
-          <h4 class="mb-1 text-sm font-mono font-medium text-text-tertiary uppercase tracking-wider">{t(locale, 'project.solution')}</h4>
+        <h4
+          class="text-text-tertiary mb-1 font-mono text-sm font-medium tracking-wider uppercase"
+        >
+          {t(locale, 'project.solution')}
+        </h4>
         <p class="text-text-secondary leading-relaxed">{solution}</p>
       </div>
 
       <div class="flex flex-wrap gap-2">
-        {stack.map((tech) => (
-          <Badge variant="default" size="sm">{tech}</Badge>
-        ))}
+        {
+          stack.map((tech) => (
+            <Badge variant="default" size="sm">
+              {tech}
+            </Badge>
+          ))
+        }
       </div>
 
       <div class="flex flex-wrap items-center gap-2">
         <Button href={repoUrl} variant="primary" class="!text-xs">
           {t(locale, 'project.viewOnGitHub')}
         </Button>
-        {requirementsUrl && (
-          <Button href={requirementsUrl} variant="ghost" class="!text-xs">
-            Requirements
-          </Button>
-        )}
-        {architectureUrl && (
-          <Button href={architectureUrl} variant="ghost" class="!text-xs">
-            Architecture
-          </Button>
-        )}
+        {
+          requirementsUrl && (
+            <Button href={requirementsUrl} variant="ghost" class="!text-xs">
+              Requirements
+            </Button>
+          )
+        }
+        {
+          architectureUrl && (
+            <Button href={architectureUrl} variant="ghost" class="!text-xs">
+              Architecture
+            </Button>
+          )
+        }
       </div>
     </div>
 
     <div class="flex flex-col gap-4 md:w-96">
-      {diagramPreview && (
-        <figure class="rounded-md border border-border overflow-hidden">
-          <img src={diagramPreview.src} alt={diagramPreview.alt} class="w-full h-auto" loading="lazy" />
-        </figure>
-      )}
+      {
+        diagramPreview && (
+          <figure class="border-border overflow-hidden rounded-md border">
+            <img
+              src={diagramPreview.src}
+              alt={diagramPreview.alt}
+              class="h-auto w-full"
+              loading="lazy"
+            />
+          </figure>
+        )
+      }
 
-      {kpis.length > 0 && (
-        <div class="grid grid-cols-2 gap-3">
-          {kpis.map((kpi) => (
-            <div class="rounded-md border border-border-subtle bg-canvas p-3">
-              <div class="flex items-center gap-1">
-                <span class="text-2xl font-bold text-accent">{kpi.value}</span>
-                {kpi.trend === 'up' && <span class="text-success text-sm" aria-label="upward trend">&uarr;</span>}
-                {kpi.trend === 'down' && <span class="text-danger text-sm" aria-label="downward trend">&darr;</span>}
+      {
+        kpis.length > 0 && (
+          <div class="grid grid-cols-2 gap-3">
+            {kpis.map((kpi) => (
+              <div class="border-border-subtle bg-canvas flex min-w-0 flex-col justify-between overflow-hidden rounded-md border p-3">
+                <div class="flex min-w-0 items-center gap-1">
+                  <span
+                    class={`text-accent leading-tight font-bold [overflow-wrap:anywhere] break-words ${
+                      kpi.value.length > 10
+                        ? 'text-base sm:text-lg'
+                        : kpi.value.length > 6
+                          ? 'text-lg sm:text-xl'
+                          : 'text-2xl'
+                    }`}
+                  >
+                    {kpi.value}
+                  </span>
+                  {kpi.trend === 'up' && (
+                    <span
+                      class="text-success shrink-0 text-sm"
+                      aria-label="upward trend"
+                    >
+                      &uarr;
+                    </span>
+                  )}
+                  {kpi.trend === 'down' && (
+                    <span
+                      class="text-danger shrink-0 text-sm"
+                      aria-label="downward trend"
+                    >
+                      &darr;
+                    </span>
+                  )}
+                </div>
+                <span class="text-text-tertiary mt-1 block font-mono text-xs leading-snug [overflow-wrap:anywhere] break-words hyphens-auto">
+                  {kpi.label}
+                </span>
               </div>
-              <span class="text-xs text-text-tertiary font-mono">{kpi.label}</span>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )
+      }
     </div>
   </div>
 </article>

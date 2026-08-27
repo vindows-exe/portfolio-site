@@ -13,50 +13,85 @@ export interface Props {
 }
 
 const { project, locale = 'en' } = Astro.props;
-const { title, description, problem, solution, stack, kpis, repoUrl } = project.data;
+const { title, description, problem, solution, stack, kpis, repoUrl } =
+  project.data;
 ---
 
-<BaseLayout title={`${title} — Vincent Boetzel`} description={description} locale={locale}>
+<BaseLayout
+  title={`${title} — Vincent Boetzel`}
+  description={description}
+  locale={locale}
+>
   <article class="py-16 md:py-24">
     <Container>
       <div class="mx-auto max-w-prose">
         <header class="mb-10">
-          <h1 class="text-display font-semibold text-text-primary">{title}</h1>
+          <h1 class="text-display text-text-primary font-semibold">{title}</h1>
 
           <div class="mt-4 flex flex-wrap gap-2">
-            {stack.map((tech: string) => (
-              <Badge variant="default" size="sm">{tech}</Badge>
-            ))}
+            {
+              stack.map((tech: string) => (
+                <Badge variant="default" size="sm">
+                  {tech}
+                </Badge>
+              ))
+            }
           </div>
 
           <div class="mt-6 flex flex-wrap gap-3">
-            <Button href={repoUrl} variant="primary">{t(locale, 'project.viewOnGitHub')}</Button>
+            <Button href={repoUrl} variant="primary"
+              >{t(locale, 'project.viewOnGitHub')}</Button
+            >
           </div>
         </header>
 
         <section class="mb-10">
-          <h2 class="mb-2 text-sm font-mono font-semibold text-text-tertiary uppercase tracking-wider">{t(locale, 'project.problem')}</h2>
+          <h2
+            class="text-text-tertiary mb-2 font-mono text-sm font-semibold tracking-wider uppercase"
+          >
+            {t(locale, 'project.problem')}
+          </h2>
           <p class="text-text-secondary leading-relaxed">{problem}</p>
         </section>
 
         <section class="mb-10">
-          <h2 class="mb-2 text-sm font-mono font-semibold text-text-tertiary uppercase tracking-wider">{t(locale, 'project.solution')}</h2>
+          <h2
+            class="text-text-tertiary mb-2 font-mono text-sm font-semibold tracking-wider uppercase"
+          >
+            {t(locale, 'project.solution')}
+          </h2>
           <p class="text-text-secondary leading-relaxed">{solution}</p>
         </section>
 
-        {kpis.length > 0 && (
-          <section class="mb-10">
-            <h2 class="mb-4 text-sm font-mono font-semibold text-text-tertiary uppercase tracking-wider">{t(locale, 'project.keyMetrics')}</h2>
-            <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
-              {kpis.map((kpi: ProjectKPI) => (
-                <div class="rounded-md border border-border-subtle bg-surface p-4 text-center">
-                  <div class="text-2xl font-bold text-accent">{kpi.value}</div>
-                  <div class="mt-1 text-xs text-text-tertiary font-mono">{kpi.label}</div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
+        {
+          kpis.length > 0 && (
+            <section class="mb-10">
+              <h2 class="text-text-tertiary mb-4 font-mono text-sm font-semibold tracking-wider uppercase">
+                {t(locale, 'project.keyMetrics')}
+              </h2>
+              <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+                {kpis.map((kpi: ProjectKPI) => (
+                  <div class="border-border-subtle bg-surface flex min-w-0 flex-col justify-between overflow-hidden rounded-md border p-4 text-center">
+                    <div
+                      class={`text-accent leading-tight font-bold [overflow-wrap:anywhere] break-words ${
+                        kpi.value.length > 10
+                          ? 'text-base sm:text-lg'
+                          : kpi.value.length > 6
+                            ? 'text-lg sm:text-xl'
+                            : 'text-2xl'
+                      }`}
+                    >
+                      {kpi.value}
+                    </div>
+                    <div class="text-text-tertiary mt-1.5 font-mono text-xs leading-snug [overflow-wrap:anywhere] break-words hyphens-auto">
+                      {kpi.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )
+        }
 
         <div class="prose-custom">
           <slot />
