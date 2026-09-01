@@ -1,0 +1,112 @@
+---
+title: "Mein Entwickler Setup 2026: Tiling, Neovim und Terminal Workflows auf macOS"
+description: "Ein Einblick in mein modulares Dotfiles Setup: Wie ich macOS fast komplett ohne Maus steuere, moderne CLI Tools nutze und meinen täglichen Neovim und AI Workflow aufgebaut habe."
+publishedAt: 2026-09-01
+tags: ["dotfiles", "neovim", "tmux", "macos", "workflow", "productivity"]
+---
+
+## Einleitung: Die Gedanken hinter dem Setup
+
+Das Standard macOS Verhalten, bei dem man die Maus ständig benutzen muss, um Fenster zu bewegen oder zwischen Apps zu wechseln, war mir viel zu nervig und langsam. Ich will einfach den gesamten Laptop mit meiner Tastatur steuern können, zum einen damit ich schneller bin und zum anderen weil das Arbeiten auf mechanischen Tastaturen einfach mehr Spaß macht.
+
+Das Ziel war also ein 100 % tastaturzentriertes System: minimale Latenz, maximale Übersicht und ein einheitliches, gut aussehendes Design.
+
+Als Theme nutze ich **Kanagawa Wave**, was sich vom Terminal über Neovim bis zur Statusleiste und meinem Hintergrundbild durchzieht.
+
+Wichtig war mir außerdem eine modulare Struktur, die auf neuen Rechnern schnell und einfach reproduzierbar ist. Dafür nutze ich **GNU Stow** und **Git**.
+
+---
+
+## Window Management: Wie benutze ich macOS ohne Maus?
+
+### AeroSpace (Tiling Window Manager)
+AeroSpace bringt das i3 Gefühl auf macOS, indem es Fenster automatisch in Kacheln anordnet.
+
+Ich habe mehrere feste Workspaces eingerichtet, zwischen denen ich schnell wechseln kann und auf denen bestimmte Apps liegen:
+* **Workspace 1:** Chrome und Ghostty (Hauptentwicklung)
+* **Workspace 2:** Obsidian und Vorschau (Notizen und Dokumente)
+* **Workspace 3:** VS Code (Fallback oder spezifische Projekte)
+* **Workspace 4:** Outlook
+* **Workspace 5:** Teams
+* **Workspace 6:** Musik
+
+Mit festen Keybindings wechsle ich blitzschnell zwischen Workspaces und Apps:
+* `Cmd + Alt + h/j/k/l` zur Navigation
+* `Cmd + Alt + 1..6` für die Workspaces
+
+### Sketchybar und JankyBorders
+**JankyBorders** zeichnet einen dezenten, farbigen Rahmen um das Fenster, das gerade aktiv ist, damit man immer sofort sieht, wo der Fokus liegt.
+
+**Sketchybar** ist eine schlanke Statusleiste oben am Bildschirm, die die normale macOS Menüleiste ersetzt. Sie zeigt nur das Wesentliche:
+* Aktive AeroSpace Workspaces
+* Systemstatus
+* VPN Status
+* Mediensteuerung
+
+### Raycast
+Raycast ist ein extrem schneller App Launcher. Mit `Cmd + Space` öffnet sich Raycast als kleines Eingabefenster. So kann ich jede App direkt finden und starten, anstatt über das Dock oder den Finder suchen zu müssen.
+
+---
+
+## Terminal und Shell: Das Herzstück des Setups
+
+### Ghostty
+Als Terminal benutze ich **Ghostty**. Es ist GPU beschleunigt, extrem schnell und bietet trotzdem ein natives macOS Feeling. Auch hier ist das Theme **Kanagawa Wave** eingerichtet und mit einer **Nerd Font** kombiniert, um Icons wie Ordner oder Git Symbole sauber darzustellen.
+
+### Zsh und Starship Prompt
+**Starship** liefert mir einen minimalistischen, informativen Prompt mit aktuellem Git Branch, Git Status und aktuellem Arbeitsverzeichnis.
+
+### Moderne CLI Tools
+Um die Terminal Experience noch weiter zu verbessern, nutze ich einige moderne CLI Tools:
+* **zoxide** (ersetzt `cd`): Merkt sich besuchte Verzeichnisse und lässt mich mit `z <name>` direkt dorthin springen.
+* **eza** (ersetzt `ls`): Zeigt Icons und Git Status direkt in der Dateiliste (`ll`).
+* **bat** (ersetzt `cat`): Datei Anzeige mit Syntax Highlighting.
+* **yazi**: Blitzschneller Terminal Dateimanager mit Vorschau.
+* **fzf und ripgrep**: Für schnelle Fuzzy Suche und Volltextsuche im Terminal.
+* **fastfetch**: Schlanke System Zusammenfassung beim Starten der Shell.
+
+---
+
+## Tmux: Multitasking und Navigation
+
+### Grundkonfiguration
+Ich habe den Standard Prefix auf `Strg + a` geändert, da das deutlich ergonomischer ist als `Strg + b`. Dafür habe ich die `Caps Lock` Taste auf `Control` umbelegt. 
+
+Mit `Prefix + v` (vertikal) und `Prefix + s` (horizontal) kann ich wie gewohnt Splits erstellen.
+
+### tmux sessionizer
+Über ein interaktives `fzf` Menü (`Prefix + f` oder Alias `ts`) wähle ich direkt ein Projekt aus. Tmux springt sofort in die passende Session oder erstellt automatisch eine neue, falls sie noch nicht existiert.
+
+### Vim Tmux Navigator
+Dient als nahtlose Brücke: Mit `Strg + h/j/k/l` springt der Cursor ohne extra Prefix direkt zwischen Neovim Splits und Tmux Panes hin und her.
+
+---
+
+## Editor: Neovim mit LazyVim
+
+![Neovim und Tmux Split in Ghostty](/images/blog/terminal-split.png)
+
+* **LazyVim Setup:** Schnelle Ladezeiten, moderne Plugins sowie ein vollwertiges LSP und Treesitter Setup.
+* **Harpoon 2 (Buffer Management):** Keine unübersichtlichen Tab Leisten mit 20 offenen Dateien. Die 3 bis 4 wichtigsten Dateien werden mit `<leader>a` angepinnt und mit `<leader>1..4` direkt angesprungen.
+* **Navigation und Suche:**
+  * **Flash.nvim:** Mit `s` + 2 Buchstaben zu jeder sichtbaren Stelle auf dem Bildschirm springen.
+  * **Snacks Picker:** Extrem schneller Fuzzy Finder für Dateien (`<leader><space>`) und Volltextsuche (`<leader>/`).
+  * **Grug Far:** Schnelles, projektweites Suchen und Ersetzen (`<leader>sr`).
+* **Der AI Pair Programming Flow:** Auf der linken Seite läuft Neovim, rechts im Tmux Split ein Terminal mit CLI AI Agenten. Änderungen werden sofort im Editor sichtbar und ich kann mit `Strg + h/l` nahtlos zwischen AI und Code wechseln.
+
+---
+
+## Dotfiles mit GNU Stow
+
+* **Modulare Ordnerstruktur:** Jedes Tool hat sein eigenes Stow Paket (`aerospace/`, `nvim/`, `ghostty/`, etc.). Die Verlinkung ins Home Verzeichnis erfolgt einfach mit `stow -R -v -t ~ *`.
+* **Sicherheit und Secrets:** Sensible Tokens liegen in `~/.zsh/secrets.zsh` (per `.gitignore` geschützt). Private und berufliche Git Profile sind via `.gitconfig-personal` getrennt.
+* **Automatisierung (`install.sh`):** Ein einziges Skript richtet auf einem neuen Rechner alles ein (Homebrew, Casks, Schriften, Hintergrunddienste und Symlinks).
+
+---
+
+## Fazit
+
+Dieses Setup ist auf keinen Fall das originellste oder komplizierteste. Aber es funktioniert und das ist deutlich wichtiger, als noch mehr Zeit in endlose Perfektionierung zu stecken. Coding macht mit diesem Setup einfach deutlich mehr Spaß.
+
+Schau gerne im GitHub Repository vorbei, wenn du dich inspirieren lassen oder Teile davon übernehmen möchtest:  
+👉 [https://github.com/vindows-exe/dotfiles](https://github.com/vindows-exe/dotfiles)
